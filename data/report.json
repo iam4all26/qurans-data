@@ -1,0 +1,47 @@
+{
+ "built_at": "2026-11-16T06:07:15Z",
+ "ok": true,
+ "errors": [],
+ "warnings": [
+  "QuranEnc Arabic differs from the Uthmani text in 405 verses; check the report"
+ ],
+ "checks": [
+  {
+   "check": "quran-uthmani structure",
+   "result": "ok",
+   "detail": "114 surahs, 6236 verses"
+  },
+  {
+   "check": "basmala handling",
+   "result": "ok",
+   "detail": "stored once; prefix removed from 0 surah openings"
+  },
+  {
+   "check": "en.sahih structure",
+   "result": "ok",
+   "detail": "114 surahs, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Hausa",
+   "result": "ok",
+   "detail": "6236 verses, Arabic text differs (letters only) in 405 verses"
+  },
+  {
+   "check": "quran.db written",
+   "result": "ok",
+   "detail": "6236 verses"
+  },
+  {
+   "check": "reciters",
+   "result": "ok",
+   "detail": "6 of 6 confirmed"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Amiri Quran (SIL Open Font Licence)"
+  }
+ ],
+ "basmala_prefix_removed_from": 0,
+ "quranenc_arabic_letter_differences": 405
+}
