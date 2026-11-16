@@ -134,17 +134,29 @@ def strip_basmala_prefix(surahs):
     """Some editions glue the Basmala in front of verse 1 of each surah (except 1 and 9).
     The Basmala is stored once on its own. Only that exact prefix is removed; nothing else
     in the text is touched. Returns (basmala_text, number_stripped)."""
-    basmala = surahs[0]["ayahs"][0]["text"].strip()
+    # The source puts an invisible byte order mark (U+FEFF) at the start of the
+    # text. It is not part of the Qur'an text and it stopped the prefix match.
+    for s in surahs:
+        for a in s["ayahs"]:
+            a["text"] = a["text"].replace("\ufeff", "").strip()
+    basmala = surahs[0]["ayahs"][0]["text"]
     words = basmala.split(" ")
     stripped = 0
     for s in surahs:
         if s["number"] in (1, 9):
             continue
         first = s["ayahs"][0]
-        parts = first["text"].strip().split(" ")
+        parts = first["text"].split(" ")
         if parts[: len(words)] == words and len(parts) > len(words):
             first["text"] = " ".join(parts[len(words):])
             stripped += 1
+    if stripped not in (0, 112):
+        fail("basmala: removed from %d surahs, expected 0 or 112" % stripped)
+    for s in surahs:
+        if s["number"] in (1, 9):
+            continue
+        if s["ayahs"][0]["text"].split(" ")[: len(words)] == words:
+            fail("basmala still attached to the first verse of surah %d" % s["number"])
     return basmala, stripped
 
 
@@ -154,7 +166,7 @@ def alq_translation(surahs):
     out = []
     for s in surahs:
         for a in s["ayahs"]:
-            out.append(str(a["text"]).strip())
+            out.append(str(a["text"]).replace("\ufeff", "").strip())
     return out
 
 
