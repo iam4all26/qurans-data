@@ -12,7 +12,9 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import sqlite3
+import subprocess
 import sys
 import time
 import urllib.request
@@ -276,6 +278,84 @@ def write_json(path, obj):
         json.dump(obj, f, ensure_ascii=False, indent=1)
 
 
+def probe_video(path):
+    """Duration (ms), width, height and whether it has sound, read with ffprobe."""
+    if not shutil.which("ffprobe"):
+        return None
+    try:
+        out = subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration:stream=codec_type,width,height",
+             "-of", "json", path], capture_output=True, text=True, timeout=60, check=True).stdout
+        j = json.loads(out)
+        dur = int(float(j.get("format", {}).get("duration", 0)) * 1000)
+        w = h = 0
+        audio = False
+        for st in j.get("streams", []):
+            if st.get("codec_type") == "video" and not w:
+                w, h = int(st.get("width", 0)), int(st.get("height", 0))
+            if st.get("codec_type") == "audio":
+                audio = True
+        return dur, w, h, audio
+    except Exception as e:
+        warn("ffprobe failed for %s: %s" % (path, e))
+        return None
+
+
+def build_backgrounds():
+    """Video backgrounds: data/backgrounds/<id>.mp4 plus data/backgrounds/clips.json.
+
+    clips.json maps each id to {"name", "category", "source", "licence", "attribution"}.
+    A clip without source and licence recorded is NOT published. Writes data/backgrounds.json."""
+    bdir = os.path.join(OUT, "backgrounds")
+    meta = {}
+    meta_path = os.path.join(bdir, "clips.json")
+    if os.path.exists(meta_path):
+        try:
+            with open(meta_path, encoding="utf-8") as f:
+                meta = json.load(f)
+        except Exception as e:
+            fail("backgrounds/clips.json is not valid JSON: %s" % e)
+    clips = []
+    if os.path.isdir(bdir):
+        for fn in sorted(os.listdir(bdir)):
+            if not fn.lower().endswith(".mp4"):
+                continue
+            cid = fn[:-4]
+            path = os.path.join(bdir, fn)
+            m = meta.get(cid) or {}
+            if not m.get("source") or not m.get("licence"):
+                warn("Background %s skipped: record source and licence in backgrounds/clips.json" % cid)
+                continue
+            info = probe_video(path)
+            dur, w, h, audio = info if info else (0, 0, 0, False)
+            size = os.path.getsize(path)
+            if info:
+                if dur < 8000 or dur > 40000:
+                    warn("Background %s lasts %.1f s (8 to 40 s advised)" % (cid, dur / 1000))
+                if max(w, h) > 1280:
+                    warn("Background %s is %dx%d (1280 on the long side advised)" % (cid, w, h))
+                if audio:
+                    warn("Background %s has a sound track (the app mutes it)" % cid)
+            if size > 15 * 1024 * 1024:
+                warn("Background %s is %.1f MB (under 15 MB advised)" % (cid, size / 1048576))
+            preview = os.path.join(bdir, cid + ".jpg")
+            if not os.path.exists(preview) and shutil.which("ffmpeg"):
+                try:
+                    subprocess.run(["ffmpeg", "-y", "-v", "error", "-ss", "1", "-i", path, "-frames:v", "1",
+                                    "-vf", "scale=320:-2", preview], timeout=60, check=True)
+                except Exception as e:
+                    warn("Preview for %s failed: %s" % (cid, e))
+            clips.append({
+                "id": cid, "name": m.get("name", cid), "category": m.get("category", "Other"),
+                "path": "backgrounds/" + fn,
+                "preview": ("backgrounds/" + cid + ".jpg") if os.path.exists(preview) else "",
+                "sizeBytes": size, "sha256": sha256(path), "durationMs": dur, "width": w, "height": h,
+                "source": m.get("source", ""), "licence": m.get("licence", ""),
+                "attribution": m.get("attribution", "")})
+    write_json(os.path.join(OUT, "backgrounds.json"), {"version": 1, "clips": clips})
+    ok("backgrounds", "%d clips published" % len(clips))
+
+
 def main():
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     os.makedirs(os.path.join(OUT, "translations"), exist_ok=True)
@@ -384,6 +464,8 @@ def main():
             warn("Amiri Quran download failed (HTTP %s)" % st)
     except Exception as e:
         warn("Amiri Quran download failed: %s" % e)
+
+    build_backgrounds()
 
     # Catalogue with checksums
     files = []
