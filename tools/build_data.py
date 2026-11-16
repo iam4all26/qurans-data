@@ -130,33 +130,63 @@ def check_structure(surahs, label):
         ok("%s structure" % label, "%d surahs, %d verses" % (len(surahs), total))
 
 
+_INVISIBLE = re.compile("[\u200b-\u200f\u202a-\u202e\u2060\ufeff]")
+
+
+def _nw(word):
+    """A word with invisible characters, marks and letter variants removed. Used only to
+    compare; the stored text is never normalised."""
+    return normalise(_INVISIBLE.sub("", word))
+
+
+def _codepoints(text, n=40):
+    return " ".join("U+%04X" % ord(c) for c in text[:n])
+
+
 def strip_basmala_prefix(surahs):
     """Some editions glue the Basmala in front of verse 1 of each surah (except 1 and 9).
-    The Basmala is stored once on its own. Only that exact prefix is removed; nothing else
-    in the text is touched. Returns (basmala_text, number_stripped)."""
+    The Basmala is stored once on its own and removed from verse 1. Only the Basmala words
+    are removed; nothing else in the text is touched. Returns (basmala_text, number_stripped).
+
+    Words are compared without marks, so a spelling variant of the same Basmala still
+    matches. The build fails only if a Basmala is still attached after stripping."""
     # The source puts an invisible byte order mark (U+FEFF) at the start of the
     # text. It is not part of the Qur'an text and it stopped the prefix match.
     for s in surahs:
         for a in s["ayahs"]:
-            a["text"] = a["text"].replace("\ufeff", "").strip()
+            a["text"] = _INVISIBLE.sub("", a["text"]).strip()
     basmala = surahs[0]["ayahs"][0]["text"]
     words = basmala.split(" ")
+    wn = [_nw(w) for w in words]
     stripped = 0
+    unmatched = []
     for s in surahs:
         if s["number"] in (1, 9):
             continue
         first = s["ayahs"][0]
         parts = first["text"].split(" ")
-        if parts[: len(words)] == words and len(parts) > len(words):
+        head = [_nw(w) for w in parts[: len(words)]]
+        if head == wn and len(parts) > len(words):
             first["text"] = " ".join(parts[len(words):])
             stripped += 1
+        elif (len(parts) >= len(words) and head[:-1] == wn[:-1] and head[-1].startswith(wn[-1])
+              and len(head[-1]) > len(wn[-1]) and parts[len(words) - 1].startswith(words[-1])):
+            # Basmala glued to the next word without a space.
+            rest = parts[len(words) - 1][len(words[-1]):]
+            first["text"] = " ".join([rest] + parts[len(words):])
+            stripped += 1
+        else:
+            unmatched.append(s["number"])
     if stripped not in (0, 112):
-        fail("basmala: removed from %d surahs, expected 0 or 112" % stripped)
+        warn("basmala: removed from %d surahs (112 expected); not matched: %s" % (stripped, unmatched))
+        for n in unmatched[:5]:
+            warn("surah %d verse 1 starts with: %s" % (n, _codepoints(surahs[n - 1]["ayahs"][0]["text"])))
     for s in surahs:
         if s["number"] in (1, 9):
             continue
-        if s["ayahs"][0]["text"].split(" ")[: len(words)] == words:
-            fail("basmala still attached to the first verse of surah %d" % s["number"])
+        t = s["ayahs"][0]["text"].split(" ")
+        if t and _nw(t[0]) == wn[0]:
+            fail("basmala still attached to the first verse of surah %d: %s" % (s["number"], _codepoints(s["ayahs"][0]["text"])))
     return basmala, stripped
 
 
