@@ -1,13 +1,3 @@
 {
- "reciters": [
-  {
-   "id": "juhani_hf",
-   "name": "Abdullah Awad Al-Juhani (second source, test)",
-   "country": "Saudi Arabia",
-   "per_ayah_url": "https://huggingface.co/datasets/zaibihassan/Quranic-Recitation-Data/resolve/main/Abdullah%20Awad%20al-Juhani%20(Murattal)/Verses/{SSS}/{SSS}{AAA}.opus",
-   "source": "Hugging Face dataset zaibihassan/Quranic-Recitation-Data, folder Abdullah Awad al-Juhani (Murattal), Verses",
-   "licence": "Dataset card states Apache-2.0 for the dataset. The recordings belong to the reciter; the original source of the audio is not stated on the card.",
-   "attribution": "Recitation by Sheikh Abdullah Awad Al-Juhani. Dataset: zaibihassan/Quranic-Recitation-Data on Hugging Face."
-  }
- ]
+ "reciters": []
 }

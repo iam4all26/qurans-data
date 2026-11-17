@@ -75,6 +75,9 @@ FOLDER_ALTERNATIVES = {
                "Abdullaah_Awwaad_Al-Juhaynee_128kbps", "Abdullah_Al-Juhani_128kbps"],
 }
 
+# Reciters kept in the list above but not published (recording quality). Remove an id to show it again.
+HIDDEN = {"juhani"}
+
 COUNTRY = {
     "alafasy": "Kuwait", "alafasy_64": "Kuwait", "husary": "Egypt", "husary_muallim": "Egypt",
     "husary_mujawwad": "Egypt", "abdulbasit_murattal": "Egypt", "abdulbasit_mujawwad": "Egypt",
@@ -570,6 +573,8 @@ def main():
     # Reciters (checked against EveryAyah)
     reciters = []
     for rid, name, folder in RECITERS:
+        if rid in HIDDEN:
+            continue
         status = None
         for cand in FOLDER_ALTERNATIVES.get(rid, [folder]):
             url = "%s/%s/001001.mp3" % (EVERYAYAH, cand)
