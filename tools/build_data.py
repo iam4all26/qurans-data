@@ -17,6 +17,7 @@ import sqlite3
 import subprocess
 import sys
 import time
+import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 
@@ -356,6 +357,58 @@ def build_backgrounds():
     ok("backgrounds", "%d clips published" % len(clips))
 
 
+# More Qur'an and translation fonts from the google/fonts repository (SIL Open Font Licence).
+# (folder, family, output name, candidate file names; the first one that downloads is used)
+GOOGLE_FONTS = [
+    ("notonaskharabic", "Noto Naskh Arabic", "NotoNaskhArabic-Regular",
+     ["NotoNaskhArabic[wght].ttf", "NotoNaskhArabic-Regular.ttf"]),
+    ("scheherazadenew", "Scheherazade New", "ScheherazadeNew-Regular",
+     ["ScheherazadeNew-Regular.ttf"]),
+    ("notokufiarabic", "Noto Kufi Arabic", "NotoKufiArabic-Regular",
+     ["NotoKufiArabic[wght].ttf", "NotoKufiArabic-Regular.ttf"]),
+    ("reemkufi", "Reem Kufi", "ReemKufi-Regular",
+     ["ReemKufi[wght].ttf", "ReemKufi-Regular.ttf"]),
+    ("notosans", "Noto Sans", "NotoSans-Regular",
+     ["NotoSans[wdth,wght].ttf", "NotoSans-Regular.ttf"]),
+    ("notoserif", "Noto Serif", "NotoSerif-Regular",
+     ["NotoSerif[wdth,wght].ttf", "NotoSerif-Regular.ttf"]),
+]
+
+
+def build_google_fonts():
+    done = []
+    base = "https://raw.githubusercontent.com/google/fonts/main/ofl/"
+    for folder, family, out_name, candidates in GOOGLE_FONTS:
+        got = None
+        for fname in candidates:
+            try:
+                st, body = fetch(base + folder + "/" + urllib.parse.quote(fname, safe=""))
+            except Exception as e:
+                warn("%s: %s" % (family, e))
+                continue
+            # A real font file starts with 0x00010000 (TrueType) or 'OTTO'.
+            if st == 200 and len(body) > 20000 and body[:4] in (b"\x00\x01\x00\x00", b"OTTO"):
+                got = (fname, body)
+                break
+        if not got:
+            warn("%s could not be downloaded; templates that use it fall back to Amiri Quran" % family)
+            continue
+        with open(os.path.join(OUT, "fonts", out_name + ".ttf"), "wb") as f:
+            f.write(got[1])
+        try:
+            st, lic = fetch(base + folder + "/OFL.txt")
+            if st == 200:
+                with open(os.path.join(OUT, "fonts", out_name + "-OFL.txt"), "wb") as f:
+                    f.write(lic)
+            else:
+                warn("%s: licence file not found (HTTP %s)" % (family, st))
+        except Exception as e:
+            warn("%s licence: %s" % (family, e))
+        ok("font", "%s (%s, %d KB)" % (family, got[0], len(got[1]) // 1024))
+        done.append(("fonts/" + out_name + ".ttf", family))
+    return done
+
+
 def main():
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     os.makedirs(os.path.join(OUT, "translations"), exist_ok=True)
@@ -449,6 +502,7 @@ def main():
 
     # Font
     font_entries = []
+    family_of = {"fonts/AmiriQuran-Regular.ttf": "Amiri Quran"}
     try:
         st, body = fetch(FONT_URL)
         st2, lic = fetch(FONT_LICENCE_URL)
@@ -464,6 +518,10 @@ def main():
             warn("Amiri Quran download failed (HTTP %s)" % st)
     except Exception as e:
         warn("Amiri Quran download failed: %s" % e)
+
+    for rel, family in build_google_fonts():
+        font_entries.append(rel)
+        family_of[rel] = family
 
     build_backgrounds()
 
@@ -481,7 +539,7 @@ def main():
     add("translations/ha_gumi.json", "translation", {"language": "ha"})
     add("reciters.json", "reciters")
     for rel in font_entries:
-        add(rel, "font", {"family": "Amiri Quran"})
+        add(rel, "font", {"family": family_of.get(rel, "Amiri Quran")})
     write_json(os.path.join(OUT, "catalog.json"), {"version": 1, "built_at": now, "files": files})
     write_json(os.path.join(OUT, "report.json"), {
         "built_at": now, "ok": not errors, "errors": errors, "warnings": warnings, "checks": checks,
