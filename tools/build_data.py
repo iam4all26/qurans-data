@@ -66,7 +66,29 @@ RECITERS = [
     ("mustafa_ismail", "Mustafa Ismail", "Mustafa_Ismail_48kbps"),
     ("ayman_sowaid", "Ayman Sowaid", "Ayman_Sowaid_64kbps"),
     ("alafasy_64", "Mishary Rashid Alafasy (64 kbps, smaller files)", "Alafasy_64kbps"),
+    ("juhani", "Abdullah Awad Al-Juhani", "Abdullaah_3awwaad_Al-Juhaynee_128kbps"),
 ]
+
+# Other folder spellings to try when the first one does not answer HTTP 200 (first hit wins).
+FOLDER_ALTERNATIVES = {
+    "juhani": ["Abdullaah_3awwaad_Al-Juhaynee_128kbps", "Abdullah_Awad_Al-Juhani_128kbps",
+               "Abdullaah_Awwaad_Al-Juhaynee_128kbps", "Abdullah_Al-Juhani_128kbps"],
+}
+
+COUNTRY = {
+    "alafasy": "Kuwait", "alafasy_64": "Kuwait", "husary": "Egypt", "husary_muallim": "Egypt",
+    "husary_mujawwad": "Egypt", "abdulbasit_murattal": "Egypt", "abdulbasit_mujawwad": "Egypt",
+    "minshawy_murattal": "Egypt", "minshawy_mujawwad": "Egypt", "mustafa_ismail": "Egypt",
+    "muaiqly": "Saudi Arabia", "sudais": "Saudi Arabia", "ghamdi": "Saudi Arabia",
+    "shuraym": "Saudi Arabia", "shatree": "Saudi Arabia", "hudhaify": "Saudi Arabia",
+    "basfar": "Saudi Arabia", "budair": "Saudi Arabia", "qatami": "Kuwait", "dussary": "Saudi Arabia",
+    "ayyoub": "Saudi Arabia", "juhani": "Saudi Arabia", "ajamy": "Kuwait", "rifai": "Lebanon",
+    "matroud": "Saudi Arabia", "bukhatir": "UAE", "tunaiji": "UAE", "jibreel": "Egypt",
+    "ali_jaber": "Saudi Arabia", "fares_abbad": "Yemen", "akhdar": "Saudi Arabia",
+    "ayman_sowaid": "Saudi Arabia",
+}
+
+PICTURE_MAX_BYTES = 400 * 1024
 
 # Reciters from other sources (for example Nigerian reciters), written by hand in
 # data/reciters_extra.json. Each entry needs: id, name, country, per_ayah_url with {SSS}{AAA}
@@ -335,6 +357,38 @@ def probe_video(path):
         return None
 
 
+def attach_pictures(reciters):
+    """Adds image, image_licence and image_attribution to a reciter when data/reciters/<id>.jpg|png|webp
+    exists, is at most 400 KB and has an entry with source and licence in data/reciters/images.json."""
+    folder = os.path.join(OUT, "reciters")
+    meta = {}
+    mp = os.path.join(folder, "images.json")
+    if os.path.exists(mp):
+        try:
+            meta = json.load(open(mp, encoding="utf-8"))
+        except Exception as e:
+            warn("reciters/images.json could not be read: %s" % e)
+    shown = 0
+    for r in reciters:
+        for ext in ("jpg", "png", "webp"):
+            rel = "reciters/%s.%s" % (r["id"], ext)
+            path = os.path.join(OUT, rel)
+            if not os.path.exists(path):
+                continue
+            m = meta.get(r["id"]) or {}
+            if os.path.getsize(path) > PICTURE_MAX_BYTES:
+                warn("Picture %s is over 400 KB: not published" % rel)
+            elif not m.get("source") or not m.get("licence"):
+                warn("Picture %s has no source and licence in images.json: not published" % rel)
+            else:
+                r["image"] = rel
+                r["image_licence"] = str(m["licence"])
+                r["image_attribution"] = str(m.get("attribution", ""))
+                shown += 1
+            break
+    ok("reciter pictures", "%d of %d reciters have a published picture" % (shown, len(reciters)))
+
+
 def build_backgrounds():
     """Video backgrounds: data/backgrounds/<id>.mp4 plus data/backgrounds/clips.json.
 
@@ -516,16 +570,21 @@ def main():
     # Reciters (checked against EveryAyah)
     reciters = []
     for rid, name, folder in RECITERS:
-        url = "%s/%s/001001.mp3" % (EVERYAYAH, folder)
-        try:
-            status, _ = fetch(url, tries=2)
-        except Exception as e:
-            status = "error: %s" % e
+        status = None
+        for cand in FOLDER_ALTERNATIVES.get(rid, [folder]):
+            url = "%s/%s/001001.mp3" % (EVERYAYAH, cand)
+            try:
+                status, _ = fetch(url, tries=2)
+            except Exception as e:
+                status = "error: %s" % e
+            if status == 200:
+                folder = cand
+                break
         verified = status == 200
         if not verified:
             warn("Reciter %s folder %s not confirmed (%s)" % (rid, folder, status))
         reciters.append({
-            "id": rid, "name": name, "folder": folder,
+            "id": rid, "name": name, "folder": folder, "country": COUNTRY.get(rid, ""),
             "per_ayah_url": "%s/%s/{SSS}{AAA}.mp3" % (EVERYAYAH, folder),
             "verified": verified, "check_status": str(status), "checked_at": now,
             "timing": None,
@@ -557,6 +616,7 @@ def main():
                 "verified": status == 200, "check_status": str(status), "checked_at": now,
                 "timing": None, "source": str(r.get("source")), "licence": str(r.get("licence")),
                 "attribution": str(r.get("attribution", ""))})
+    attach_pictures(reciters)
     write_json(os.path.join(OUT, "reciters.json"), {"version": 1, "reciters": reciters})
     ok("reciters", "%d of %d confirmed" % (sum(1 for r in reciters if r["verified"]), len(reciters)))
 
