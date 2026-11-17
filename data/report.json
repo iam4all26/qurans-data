@@ -1,9 +1,10 @@
 {
- "built_at": "2026-11-17T01:47:32Z",
+ "built_at": "2026-11-17T03:31:08Z",
  "ok": true,
  "errors": [],
  "warnings": [
-  "QuranEnc Arabic differs from the Uthmani text in 293 verses; check the report"
+  "QuranEnc Arabic differs from the Uthmani text in 293 verses; check the report",
+  "Reciter husary_mujawwad folder Husary_Mujawwad_128kbps not confirmed (404)"
  ],
  "checks": [
   {
@@ -34,7 +35,7 @@
   {
    "check": "reciters",
    "result": "ok",
-   "detail": "6 of 6 confirmed"
+   "detail": "30 of 31 confirmed"
   },
   {
    "check": "font",

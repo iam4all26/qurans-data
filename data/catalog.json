@@ -1,13 +1,13 @@
 {
  "version": 1,
- "built_at": "2026-11-17T01:47:32Z",
+ "built_at": "2026-11-17T03:31:08Z",
  "files": [
   {
    "id": "quran",
    "type": "database",
    "path": "quran.db",
    "sizeBytes": 1642496,
-   "sha256": "c41fc6be699dc50c73e39cee5d0bb61fca4b5882dd104dd8257b14e2cf66f184",
+   "sha256": "6f457b7d6fe3d362f115b5d0856ec6df259e2d297695d777a2c8f06cc948ce81",
    "verses": 6236,
    "surahs": 114
   },
@@ -16,7 +16,7 @@
    "type": "translation",
    "path": "translations/en_sahih.json",
    "sizeBytes": 896732,
-   "sha256": "1ec59b62e30873975b5fcd72b80b744ebde15e02e283d028368f7666ba7c42e5",
+   "sha256": "587d3ba70c05248c97d55c2254b3dbc4302ee30cb1a793ef36f13d0c5ea32095",
    "language": "en"
   },
   {
@@ -24,15 +24,15 @@
    "type": "translation",
    "path": "translations/ha_gumi.json",
    "sizeBytes": 949688,
-   "sha256": "3020a40374c3934f11f0f05343e26a847b7694184dbc0da1bbf604f6fbd751fa",
+   "sha256": "a37c50f409093d6ab984fc3bff1bd95320d1cac43208abfb546692dc649d07c6",
    "language": "ha"
   },
   {
    "id": "reciters",
    "type": "reciters",
    "path": "reciters.json",
-   "sizeBytes": 2507,
-   "sha256": "366069d3c3958f817e93156fec8dc906487a2379763a18db8e6f079826f2ce76"
+   "sizeBytes": 12952,
+   "sha256": "a574830e47c9cde28fc0477d79f7f8b679428252635abb348a741967381dcac1"
   },
   {
    "id": "AmiriQuran-Regular",
