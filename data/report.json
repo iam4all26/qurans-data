@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-17T06:46:20Z",
+ "built_at": "2026-11-17T06:57:57Z",
  "ok": true,
  "errors": [],
  "warnings": [
@@ -35,12 +35,12 @@
   {
    "check": "reciter pictures",
    "result": "ok",
-   "detail": "33 of 33 reciters have a published picture"
+   "detail": "31 of 31 reciters have a published picture"
   },
   {
    "check": "reciters",
    "result": "ok",
-   "detail": "32 of 33 confirmed"
+   "detail": "30 of 31 confirmed"
   },
   {
    "check": "font",
