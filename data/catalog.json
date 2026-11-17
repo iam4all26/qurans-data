@@ -1,13 +1,13 @@
 {
  "version": 1,
- "built_at": "2026-11-16T20:38:49Z",
+ "built_at": "2026-11-17T01:47:32Z",
  "files": [
   {
    "id": "quran",
    "type": "database",
    "path": "quran.db",
    "sizeBytes": 1642496,
-   "sha256": "d378ec2fd887b024609ac9c0d54c5c67271d91930f0078c37f875d59792d255b",
+   "sha256": "c41fc6be699dc50c73e39cee5d0bb61fca4b5882dd104dd8257b14e2cf66f184",
    "verses": 6236,
    "surahs": 114
   },
@@ -16,7 +16,7 @@
    "type": "translation",
    "path": "translations/en_sahih.json",
    "sizeBytes": 896732,
-   "sha256": "c16d3378304638b2a5540dd1336b0ed0ba34e2706630677a19884ace25473072",
+   "sha256": "1ec59b62e30873975b5fcd72b80b744ebde15e02e283d028368f7666ba7c42e5",
    "language": "en"
   },
   {
@@ -24,7 +24,7 @@
    "type": "translation",
    "path": "translations/ha_gumi.json",
    "sizeBytes": 949688,
-   "sha256": "030cd70550a95515984bb18784e9e0f36bf136851c37c3cb709ccab76ec08a2a",
+   "sha256": "3020a40374c3934f11f0f05343e26a847b7694184dbc0da1bbf604f6fbd751fa",
    "language": "ha"
   },
   {
@@ -32,7 +32,7 @@
    "type": "reciters",
    "path": "reciters.json",
    "sizeBytes": 2507,
-   "sha256": "fa6f2df9ac564d6a45bcdce3dc2e63cf9cba32d39331c22bb6022d40b31bce7b"
+   "sha256": "366069d3c3958f817e93156fec8dc906487a2379763a18db8e6f079826f2ce76"
   },
   {
    "id": "AmiriQuran-Regular",
@@ -41,6 +41,54 @@
    "sizeBytes": 136920,
    "sha256": "e2a47644762d16bdfb6d33e0d8db8c6ff30beae84150ef5a705316bbd829455c",
    "family": "Amiri Quran"
+  },
+  {
+   "id": "NotoNaskhArabic-Regular",
+   "type": "font",
+   "path": "fonts/NotoNaskhArabic-Regular.ttf",
+   "sizeBytes": 307592,
+   "sha256": "67b5a525a661b607971fbd3f96a81b89d3a768e74534fca84f18ac97e6fab72f",
+   "family": "Noto Naskh Arabic"
+  },
+  {
+   "id": "ScheherazadeNew-Regular",
+   "type": "font",
+   "path": "fonts/ScheherazadeNew-Regular.ttf",
+   "sizeBytes": 331504,
+   "sha256": "794bac8dc9e83d1d620bc471ea694f5f31d0965ce8006490a79dfc51a2d283b3",
+   "family": "Scheherazade New"
+  },
+  {
+   "id": "NotoKufiArabic-Regular",
+   "type": "font",
+   "path": "fonts/NotoKufiArabic-Regular.ttf",
+   "sizeBytes": 434204,
+   "sha256": "494f6b61469d7a02a2d63f0fc4930bb007388d8cfe551de5eb98354e100889f3",
+   "family": "Noto Kufi Arabic"
+  },
+  {
+   "id": "ReemKufi-Regular",
+   "type": "font",
+   "path": "fonts/ReemKufi-Regular.ttf",
+   "sizeBytes": 127152,
+   "sha256": "33ead1986cd48c138c4d906c9e5a6341877268461f97623409a2014de1cd4aa4",
+   "family": "Reem Kufi"
+  },
+  {
+   "id": "NotoSans-Regular",
+   "type": "font",
+   "path": "fonts/NotoSans-Regular.ttf",
+   "sizeBytes": 2049096,
+   "sha256": "bfb7bb691513f12e734dc346c03a03f784912432d7e3fa8e56efcf906fe86b3d",
+   "family": "Noto Sans"
+  },
+  {
+   "id": "NotoSerif-Regular",
+   "type": "font",
+   "path": "fonts/NotoSerif-Regular.ttf",
+   "sizeBytes": 1887192,
+   "sha256": "4d8e6761424656867019081a1a01336f3cb086982682698714054fc33f782713",
+   "family": "Noto Serif"
   }
  ]
 }

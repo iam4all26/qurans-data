@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-16T20:38:49Z",
+ "built_at": "2026-11-17T01:47:32Z",
  "ok": true,
  "errors": [],
  "warnings": [
@@ -40,6 +40,36 @@
    "check": "font",
    "result": "ok",
    "detail": "Amiri Quran (SIL Open Font Licence)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Noto Naskh Arabic (NotoNaskhArabic[wght].ttf, 300 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Scheherazade New (ScheherazadeNew-Regular.ttf, 323 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Noto Kufi Arabic (NotoKufiArabic[wght].ttf, 424 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Reem Kufi (ReemKufi[wght].ttf, 124 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Noto Sans (NotoSans[wdth,wght].ttf, 2001 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Noto Serif (NotoSerif[wdth,wght].ttf, 1842 KB)"
   },
   {
    "check": "backgrounds",
