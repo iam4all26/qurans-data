@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-17T06:07:02Z",
+ "built_at": "2026-11-17T06:13:23Z",
  "ok": true,
  "errors": [],
  "warnings": [
@@ -33,9 +33,14 @@
    "detail": "6236 verses"
   },
   {
+   "check": "reciter pictures",
+   "result": "ok",
+   "detail": "32 of 32 reciters have a published picture"
+  },
+  {
    "check": "reciters",
    "result": "ok",
-   "detail": "30 of 31 confirmed"
+   "detail": "31 of 32 confirmed"
   },
   {
    "check": "font",
