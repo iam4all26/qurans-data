@@ -39,7 +39,40 @@ RECITERS = [
     ("muaiqly", "Maher Al Muaiqly", "MaherAlMuaiqly128kbps"),
     ("sudais", "Abdurrahman As-Sudais", "Abdurrahmaan_As-Sudais_192kbps"),
     ("ghamdi", "Saad Al-Ghamdi", "Ghamadi_40kbps"),
+    # More EveryAyah folders. Each one is tested with 001001.mp3; a folder that does not answer
+    # HTTP 200 is NOT published and the app never shows it (see report.json warnings).
+    ("shuraym", "Saud Ash-Shuraym", "Saood_ash-Shuraym_128kbps"),
+    ("shatree", "Abu Bakr Ash-Shatri", "Abu_Bakr_Ash-Shaatree_128kbps"),
+    ("rifai", "Hani Ar-Rifai", "Hani_Rifai_192kbps"),
+    ("hudhaify", "Ali Al-Hudhaify", "Hudhaify_128kbps"),
+    ("minshawy_murattal", "Mohamed Siddiq Al-Minshawi (Murattal)", "Minshawy_Murattal_128kbps"),
+    ("minshawy_mujawwad", "Mohamed Siddiq Al-Minshawi (Mujawwad)", "Minshawy_Mujawwad_192kbps"),
+    ("husary_muallim", "Mahmoud Khalil Al-Husary (Muallim)", "Husary_Muallim_128kbps"),
+    ("husary_mujawwad", "Mahmoud Khalil Al-Husary (Mujawwad)", "Husary_Mujawwad_128kbps"),
+    ("abdulbasit_mujawwad", "Abdul Basit Abdus Samad (Mujawwad)", "Abdul_Basit_Mujawwad_128kbps"),
+    ("ajamy", "Ahmed Al-Ajmi", "Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net"),
+    ("basfar", "Abdullah Basfar", "Abdullah_Basfar_192kbps"),
+    ("matroud", "Abdullah Matroud", "Abdullah_Matroud_128kbps"),
+    ("budair", "Salah Al-Budair", "Salah_Al_Budair_128kbps"),
+    ("bukhatir", "Salah Bukhatir", "Salaah_AbdulRahman_Bukhatir_128kbps"),
+    ("qatami", "Nasser Al-Qatami", "Nasser_Alqatami_128kbps"),
+    ("dussary", "Yasser Ad-Dosari", "Yasser_Ad-Dussary_128kbps"),
+    ("ayyoub", "Muhammad Ayyub", "Muhammad_Ayyoub_128kbps"),
+    ("jibreel", "Muhammad Jibreel", "Muhammad_Jibreel_128kbps"),
+    ("ali_jaber", "Ali Jaber", "Ali_Jaber_64kbps"),
+    ("fares_abbad", "Fares Abbad", "Fares_Abbad_64kbps"),
+    ("tunaiji", "Khalifa At-Tunaiji", "Khalefa_Al_Tunaiji_64kbps"),
+    ("akhdar", "Ibrahim Al-Akhdar", "Ibrahim_Akhdar_32kbps"),
+    ("mustafa_ismail", "Mustafa Ismail", "Mustafa_Ismail_48kbps"),
+    ("ayman_sowaid", "Ayman Sowaid", "Ayman_Sowaid_64kbps"),
+    ("alafasy_64", "Mishary Rashid Alafasy (64 kbps, smaller files)", "Alafasy_64kbps"),
 ]
+
+# Reciters from other sources (for example Nigerian reciters), written by hand in
+# data/reciters_extra.json. Each entry needs: id, name, country, per_ayah_url with {SSS}{AAA}
+# (surah and verse as three digits each, same as EveryAyah), and source, licence, attribution.
+# The first verse (001001) is tested, and an entry without source and licence is NOT published.
+EXTRA_RECITERS_FILE = "reciters_extra.json"
 
 errors = []
 warnings = []
@@ -497,6 +530,33 @@ def main():
             "verified": verified, "check_status": str(status), "checked_at": now,
             "timing": None,
             "licence": "Recordings belong to the reciter. Not bundled; downloaded on the user's phone. Credit the reciter."})
+    extra_path = os.path.join(OUT, EXTRA_RECITERS_FILE)
+    if os.path.exists(extra_path):
+        try:
+            extra = json.load(open(extra_path, encoding="utf-8")).get("reciters", [])
+        except Exception as e:
+            extra = []
+            warn("%s could not be read: %s" % (EXTRA_RECITERS_FILE, e))
+        for r in extra:
+            rid, tpl = str(r.get("id", "")).strip(), str(r.get("per_ayah_url", ""))
+            if not rid or "{SSS}" not in tpl or "{AAA}" not in tpl:
+                warn("extra reciter %r skipped: needs id and per_ayah_url with {SSS} and {AAA}" % rid)
+                continue
+            if not r.get("source") or not r.get("licence"):
+                warn("extra reciter %s skipped: source and licence are required" % rid)
+                continue
+            try:
+                status, _ = fetch(tpl.replace("{SSS}", "001").replace("{AAA}", "001"), tries=2)
+            except Exception as e:
+                status = "error: %s" % e
+            if status != 200:
+                warn("extra reciter %s not confirmed (%s)" % (rid, status))
+            reciters.append({
+                "id": rid, "name": str(r.get("name", rid)), "folder": rid,
+                "country": str(r.get("country", "")), "per_ayah_url": tpl,
+                "verified": status == 200, "check_status": str(status), "checked_at": now,
+                "timing": None, "source": str(r.get("source")), "licence": str(r.get("licence")),
+                "attribution": str(r.get("attribution", ""))})
     write_json(os.path.join(OUT, "reciters.json"), {"version": 1, "reciters": reciters})
     ok("reciters", "%d of %d confirmed" % (sum(1 for r in reciters if r["verified"]), len(reciters)))
 
