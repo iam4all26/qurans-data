@@ -5,6 +5,9 @@ on:
   push:
     paths:
       - "tools/build_data.py"
+      - "data/reciters/**"
+      - "data/reciters_extra.json"
+      - "data/backgrounds/**"
       - ".github/workflows/build-data.yml"
 
 permissions:
