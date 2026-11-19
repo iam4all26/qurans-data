@@ -1,4 +1,20 @@
 {
  "version": 1,
- "clips": []
+ "clips": [
+  {
+   "id": "sahara",
+   "name": "555879505 1795027444569576",
+   "category": "Sahara",
+   "path": "backgrounds/sahara.mp4",
+   "preview": "",
+   "sizeBytes": 4477609,
+   "sha256": "f28a889b8a1a1c59c8244ed71ba6191460b0a20bee33aa73cc40bb036ac5ad42",
+   "durationMs": 0,
+   "width": 0,
+   "height": 0,
+   "source": "Created by me with Google Flow",
+   "licence": "Own work",
+   "attribution": "Usama Musa Gudu"
+  }
+ ]
 }
