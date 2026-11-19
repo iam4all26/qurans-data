@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0820">
+<title>Qur'an Studio Admin</title>
+<style>
+:root{--bg:#0a0616;--card:#1a1332;--field:#0c0818;--line:#3a2d66;--line2:#2a2150;--ink:#f3eefe;--mut:#a79fc4;--acc:#8b5cf6;--ok:#22e07a;--bad:#f87171;--warn:#fbbf24}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--ink);font:15px/1.4 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+ background:radial-gradient(900px 420px at 62% -8%,rgba(124,58,237,.38),transparent 70%),linear-gradient(180deg,#120a2a,#0a0616 60%);background-attachment:fixed}
+.wrap{max-width:980px;margin:auto;padding:16px 14px 60px}
+h1{margin:6px 0 2px;font-size:24px}h1+p{margin:0 0 14px;color:var(--mut)}
+h2{margin:0 0 4px;font-size:19px}h3{margin:16px 0 8px;font-size:16px}
+.hide{display:none!important}
+button,input,select,textarea{font:inherit;color:var(--ink)}
+input,select,textarea{width:100%;background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+textarea{min-height:60px;resize:vertical}
+input[type=checkbox]{width:20px;height:20px;padding:0;flex:none}
+button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:12px;border:1px solid var(--line);background:rgba(18,12,38,.7);font-weight:500}
+.btn.pri{background:linear-gradient(180deg,#9d6bff,#7c3aed);border-color:rgba(190,160,255,.5)}
+.btn.sm{padding:7px 12px;font-size:13.5px;border-radius:9px}
+.btn.full{width:100%}
+.card{border:1px solid var(--line2);border-radius:18px;background:rgba(26,19,52,.6);padding:16px;margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.row{grid-template-columns:1fr}}
+label.l{display:block;font-size:13.5px;font-weight:500;margin:10px 0 5px}
+.small{font-size:12.5px;color:var(--mut)}
+.chk{display:flex;align-items:center;gap:9px;margin:10px 0;font-size:14.5px}
+.tabs{display:flex;gap:6px;margin:12px 0;overflow-x:auto}
+.tabs button{flex:1;min-width:104px;padding:12px 8px;border:1px solid var(--line2);border-radius:12px;background:rgba(14,9,32,.7)}
+.tabs button.on{background:linear-gradient(180deg,#9d6bff,#7c3aed);border-color:rgba(190,160,255,.5)}
+.status{padding:10px 14px;border-radius:12px;margin-top:12px;font-size:14.5px;border:1px solid var(--line)}
+.status.ok{background:rgba(14,60,44,.55);border-color:rgba(34,224,122,.45)}
+.status.bad{background:rgba(80,20,30,.5);border-color:rgba(248,113,113,.5)}
+.item{display:grid;grid-template-columns:84px 1fr;gap:12px;border:1px solid var(--line2);border-radius:14px;padding:12px;margin-bottom:12px;background:rgba(14,9,32,.35)}
+.thumb{width:84px;height:84px;border-radius:12px;background:#0c0818;border:1px solid var(--line);overflow:hidden;display:grid;place-items:center;color:var(--mut);font-size:12px;text-align:center}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.bad{color:var(--bad)}.ok{color:var(--ok)}.warn{color:var(--warn)}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:8px;border:1px solid var(--line);margin-right:6px}
+#log{border:1px solid var(--line2);border-radius:12px;background:rgba(8,5,20,.7);padding:12px 14px;font:13px/1.7 ui-monospace,Menlo,Consolas,monospace;max-height:240px;overflow:auto;min-height:48px}
+#log .t{color:var(--mut)}
+.eye{position:relative}.eye input{padding-right:70px}.eye button{position:absolute;right:4px;top:4px;background:none;border:0;padding:7px 10px}
+details>summary{cursor:pointer;font-weight:600;padding:4px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Qur'an Studio Admin</h1>
+<p>Manage the data repo from your browser: app control, video backgrounds, reciters and builds.</p>
+
+<div class="card" id="conn">
+  <details id="connDetails" open><summary>GitHub connection</summary>
+  <label class="l" for="token">GitHub token <span class="small">(saved only in this browser)</span></label>
+  <div class="eye"><input id="token" type="password" placeholder="Paste your token" autocomplete="off"><button type="button" id="eye" class="btn sm">Show</button></div>
+  <div class="row">
+    <div><label class="l" for="repo">Repository</label><input id="repo" value="Iam4all26/qurans-data"></div>
+    <div><label class="l" for="branch">Branch</label><input id="branch" value="main"></div>
+  </div>
+  <p class="small">Use a fine-grained token for this repository only, with Contents: Read and write, and Actions: Read and write (to start builds).</p>
+  <div style="display:flex;gap:10px"><button class="btn pri" id="connect" type="button">Connect</button><button class="btn" id="forget" type="button">Forget token</button></div>
+  </details>
+  <div id="status" class="status hide"></div>
+</div>
+
+<div id="main" class="hide">
+  <div class="tabs" id="tabs">
+    <button data-t="control" class="on" type="button">App control</button>
+    <button data-t="bg" type="button">Backgrounds</button>
+    <button data-t="rec" type="button">Reciters</button>
+    <button data-t="build" type="button">Build</button>
+  </div>
+
+  <!-- APP CONTROL -->
+  <section id="p-control">
+    <div class="card">
+      <h2>App control</h2>
+      <p class="small">Edits data/app_config.json. Phones read it at every launch and when they return to the app (at most every 30 minutes). GitHub may keep the old copy about 5 minutes. No build is needed.</p>
+      <div class="row">
+        <div><label class="l">Minimum version (older versions are blocked)</label><input id="c_min" placeholder="empty = off, e.g. 1.1.0"></div>
+        <div><label class="l">Latest version (older versions see an update bar)</label><input id="c_latest" placeholder="e.g. 1.1.0"></div>
+      </div>
+      <label class="l">Update message</label><input id="c_msg" placeholder="Shown on both update screens">
+      <label class="l">Play Store link <span class="small">(empty = the app's own Play page)</span></label><input id="c_play">
+      <h3>Announcement (shown once per id)</h3>
+      <div class="row">
+        <div><label class="l">Id <span class="small">(change it for every new message; empty = none)</span></label>
+          <div style="display:flex;gap:8px"><input id="c_aid"><button class="btn sm" type="button" id="c_newid">New id</button></div></div>
+        <div><label class="l">Title</label><input id="c_atitle"></div>
+      </div>
+      <label class="l">Text</label><textarea id="c_atext"></textarea>
+      <h3>Maintenance</h3>
+      <label class="chk"><input type="checkbox" id="c_mon"><span>Maintenance on (blocks the app with the text below)</span></label>
+      <input id="c_mtext" placeholder="Back soon text">
+      <h3>Switch off parts of the app</h3>
+      <label class="chk"><input type="checkbox" id="c_dall"><span>Block the whole app</span></label>
+      <input id="c_dalltext" placeholder="Text shown when the whole app is blocked">
+      <label class="chk"><input type="checkbox" id="c_dexp"><span>Turn off video export</span></label>
+      <input id="c_ftext" placeholder="Text shown when a feature is off">
+      <div id="c_warn" class="small warn" style="margin-top:10px"></div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn pri" id="c_save" type="button">Save app control</button>
+        <button class="btn" id="c_clear" type="button">Turn everything off</button>
+        <button class="btn" id="c_reload" type="button">Reload from GitHub</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BACKGROUNDS -->
+  <section id="p-bg" class="hide">
+    <div class="card">
+      <h2>Add video backgrounds</h2>
+      <p class="small">MP4, about 10 to 15 s, 720p to 1080p, no sound, under 15 MB. Each clip needs a source and a licence or it is not published.</p>
+      <div class="row">
+        <div><label class="l">Category</label><input id="bg_cat" list="bgcats" placeholder="e.g. Sky"></div>
+        <div><label class="l">Source</label><input id="bg_src" value="Created by me with Google Flow"></div>
+      </div>
+      <datalist id="bgcats"></datalist>
+      <div class="row">
+        <div><label class="l">Licence</label><input id="bg_lic" placeholder="e.g. Own work, commercial use allowed by Flow terms"></div>
+        <div><label class="l">Attribution</label><input id="bg_att" placeholder="e.g. Usama Musa Gudu (KAIDA)"></div>
+      </div>
+      <input type="file" id="bg_files" accept="video/mp4" multiple class="hide">
+      <div style="margin-top:12px"><button class="btn" id="bg_pick" type="button">Choose MP4 files</button></div>
+      <div id="bg_queue" style="margin-top:12px"></div>
+      <button class="btn pri full" id="bg_publish" type="button" disabled>Upload clips</button>
+    </div>
+    <div class="card">
+      <h2>Published and pending clips</h2>
+      <div id="bg_list"></div>
+      <button class="btn pri full" id="bg_save" type="button">Save clip changes</button>
+    </div>
+  </section>
+
+  <!-- RECITERS -->
+  <section id="p-rec" class="hide">
+    <div class="card">
+      <h2>Reciter photos</h2>
+      <p class="small">Choose a photo for a reciter. It is cropped to a 300x300 square JPG automatically. The record needs a source and a licence, or the photo is not published.</p>
+      <input id="r_search" placeholder="Search reciter">
+      <div id="r_list" style="margin-top:12px"></div>
+      <button class="btn pri full" id="r_save" type="button">Save photos and records</button>
+    </div>
+    <div class="card">
+      <h2>Add a reciter from another source</h2>
+      <p class="small">Writes data/reciters_extra.json. The link must contain {SSS}{AAA} (surah and verse as three digits each, like EveryAyah) and the first verse is tested at build. Without source and licence it is skipped.</p>
+      <div class="row">
+        <div><label class="l">Id (letters, no spaces)</label><input id="x_id" placeholder="e.g. alaramma_ahmad"></div>
+        <div><label class="l">Name</label><input id="x_name"></div>
+        <div><label class="l">Country</label><input id="x_country" placeholder="e.g. Nigeria"></div>
+        <div><label class="l">Link per verse</label><input id="x_url" placeholder="https://host/path/{SSS}{AAA}.mp3"></div>
+        <div><label class="l">Source</label><input id="x_src"></div>
+        <div><label class="l">Licence</label><input id="x_lic"></div>
+      </div>
+      <label class="l">Attribution</label><input id="x_att">
+      <button class="btn pri" id="x_add" type="button" style="margin-top:12px">Add reciter</button>
+      <h3>Reciters added here</h3>
+      <div id="x_list"></div>
+      <button class="btn pri full" id="x_save" type="button" disabled>Save extra reciters</button>
+    </div>
+  </section>
+
+  <!-- BUILD -->
+  <section id="p-build" class="hide">
+    <div class="card">
+      <h2>Data build</h2>
+      <p class="small">A build starts by itself when you change reciter photos, extra reciters or video clips. Use this for anything else. After a build, open the app: More, Resources, Check for updates.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn pri" id="b_run" type="button">Run build now</button><button class="btn" id="b_refresh" type="button">Refresh</button></div>
+      <div id="b_runs" style="margin-top:14px"></div>
+      <h3>Last report</h3>
+      <div id="b_report" class="small"></div>
+    </div>
+    <div class="card">
+      <h2>Templates</h2>
+      <p class="small">The 8 templates and their pictures are inside the app (assets/templates in the app repo), so they cannot be changed from here yet. Moving them to this repo needs a small app update; ask for it as the next batch.</p>
+    </div>
+  </section>
+
+  <div class="card"><h2>Log</h2><div id="log"></div></div>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let cfg={}, tree={};
+const logEl=$('log');
+function log(m,c){const d=document.createElement('div');if(c)d.className=c;const t=document.createElement('span');t.className='t';t.textContent='['+new Date().toTimeString().slice(0,8)+'] ';d.append(t,document.createTextNode(m));logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;}
+function setStatus(kind,text){const s=$('status');s.className='status '+kind;s.textContent=text;}
+function slug(t){return t.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');}
+function h(tag,attrs,...kids){const e=document.createElement(tag);for(const k in(attrs||{})){if(k==='class')e.className=attrs[k];else if(k==='text')e.textContent=attrs[k];else e.setAttribute(k,attrs[k]);}kids.forEach(x=>e.append(x));return e;}
+function field(label,value,onin,extra){const w=h('div');w.append(h('label',{class:'l',text:label}));const i=h('input');i.value=value||'';i.oninput=()=>onin(i.value);if(extra)i.placeholder=extra;w.append(i);return w;}
+const raw=p=>'https://raw.githubusercontent.com/'+cfg.repo+'/'+cfg.branch+'/'+encodeURI(p)+'?t='+Date.now();
+
+async function api(path,opts={}){
+  const r=await fetch('https://api.github.com/repos/'+cfg.repo+path,{...opts,headers:{'Authorization':'Bearer '+cfg.token,'Accept':'application/vnd.github+json','Content-Type':'application/json',...(opts.headers||{})}});
+  if(!r.ok){let t='';try{t=(await r.json()).message}catch(e){}throw new Error(r.status+' '+t);}
+  return r;
+}
+async function loadTree(){
+  const ref=await (await api('/git/ref/heads/'+cfg.branch)).json();
+  const commit=await (await api('/git/commits/'+ref.object.sha)).json();
+  const t=await (await api('/git/trees/'+commit.tree.sha+'?recursive=1')).json();
+  tree={};t.tree.forEach(e=>{if(e.type==='blob')tree[e.path]=e.sha;});
+}
+async function getText(path){
+  try{const r=await api('/contents/'+encodeURI(path)+'?ref='+cfg.branch,{headers:{'Accept':'application/vnd.github.raw'}});return await r.text();}
+  catch(e){if(String(e.message).startsWith('404'))return null;throw e;}
+}
+async function getJson(path,fallback){const t=await getText(path);if(t===null||!t.trim())return fallback;try{return JSON.parse(t);}catch(e){throw new Error(path+' is not valid JSON: '+e.message);}}
+function b64(blob){return new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result.split(',')[1]);fr.readAsDataURL(blob);});}
+async function blobSha(blob){const r=await api('/git/blobs',{method:'POST',body:JSON.stringify({content:await b64(blob),encoding:'base64'})});return (await r.json()).sha;}
+const textEntry=(path,obj)=>({path,mode:'100644',type:'blob',content:JSON.stringify(obj,null,2)+'\n'});
+async function commit(entries,message){
+  log('Creating commit...');
+  const ref=await (await api('/git/ref/heads/'+cfg.branch)).json();
+  const head=ref.object.sha;
+  const c0=await (await api('/git/commits/'+head)).json();
+  const t=await (await api('/git/trees',{method:'POST',body:JSON.stringify({base_tree:c0.tree.sha,tree:entries})})).json();
+  const c=await (await api('/git/commits',{method:'POST',body:JSON.stringify({message,tree:t.sha,parents:[head]})})).json();
+  await api('/git/refs/heads/'+cfg.branch,{method:'PATCH',body:JSON.stringify({sha:c.sha})});
+  await loadTree();
+}
+
+/* ---------- connect ---------- */
+async function connect(){
+  cfg={token:$('token').value.trim(),repo:$('repo').value.trim(),branch:$('branch').value.trim()||'main'};
+  if(!cfg.token){setStatus('bad','Paste your token first.');return;}
+  setStatus('','Connecting...');
+  try{
+    await loadTree();
+    try{localStorage.setItem('qs_admin',JSON.stringify(cfg));}catch(e){}
+    setStatus('ok','Connected to '+cfg.repo+' ('+cfg.branch+').');
+    $('main').classList.remove('hide');$('connDetails').open=false;
+    log('Connected.','ok');
+    await Promise.all([loadControl(),loadBg(),loadRec()].map(p=>p.catch(e=>log('Load failed: '+e.message,'bad'))));
+    loadBuild().catch(e=>log('Build info: '+e.message,'bad'));
+  }catch(e){setStatus('bad',e.message);log('Failed: '+e.message,'bad');}
+}
+$('connect').onclick=connect;
+$('forget').onclick=()=>{try{localStorage.removeItem('qs_admin');}catch(e){}$('token').value='';$('main').classList.add('hide');setStatus('','Token removed from this browser.');};
+$('eye').onclick=()=>{const t=$('token');const s=t.type==='password';t.type=s?'text':'password';$('eye').textContent=s?'Hide':'Show';};
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  ['control','bg','rec','build'].forEach(t=>$('p-'+t).classList.toggle('hide',t!==b.dataset.t));
+});
+
+/* ---------- app control ---------- */
+let appCfg={};
+const verOk=v=>v===''||/^\d+(\.\d+){0,3}$/.test(v);
+const verCmp=(a,b)=>{const x=a.split('.').map(Number),y=b.split('.').map(Number);for(let i=0;i<Math.max(x.length,y.length);i++){const d=(x[i]||0)-(y[i]||0);if(d)return d<0?-1:1;}return 0;};
+function fillControl(){
+  const c=appCfg,a=c.announcement||{},m=c.maintenance||{},d=c.disabled||{};
+  $('c_min').value=c.min_version||'';$('c_latest').value=c.latest_version||'';$('c_msg').value=c.update_message||'';$('c_play').value=c.play_url||'';
+  $('c_aid').value=a.id||'';$('c_atitle').value=a.title||'';$('c_atext').value=a.text||'';
+  $('c_mon').checked=!!m.on;$('c_mtext').value=m.text||'';
+  $('c_dall').checked=!!d.all;$('c_dalltext').value=d.all_text||'';
+  $('c_dexp').checked=(d.features||[]).includes('export');$('c_ftext').value=d.feature_text||'';
+  checkControl();
+}
+function readControl(){
+  const feats=($('c_dexp').checked?['export']:[]);
+  const old=appCfg.disabled||{};
+  const keep=(old.features||[]).filter(f=>f!=='export');
+  return {...appCfg,schema:appCfg.schema||1,
+    play_url:$('c_play').value.trim(),min_version:$('c_min').value.trim(),latest_version:$('c_latest').value.trim(),update_message:$('c_msg').value,
+    announcement:{id:$('c_aid').value.trim(),title:$('c_atitle').value,text:$('c_atext').value},
+    maintenance:{on:$('c_mon').checked,text:$('c_mtext').value},
+    disabled:{all:$('c_dall').checked,all_text:$('c_dalltext').value,features:[...keep,...feats],feature_text:$('c_ftext').value}};
+}
+function checkControl(){
+  const w=[],mn=$('c_min').value.trim(),lt=$('c_latest').value.trim();
+  if(!verOk(mn))w.push('Minimum version must look like 1.1.0.');
+  if(!verOk(lt))w.push('Latest version must look like 1.1.0.');
+  if(verOk(mn)&&verOk(lt)&&mn&&lt&&verCmp(mn,lt)>0)w.push('Minimum version is higher than the latest version.');
+  if(mn)w.push('Phones older than '+mn+' will be blocked until they update. Reset it to empty after testing.');
+  if($('c_mon').checked)w.push('Maintenance is ON: nobody can use the app.');
+  if($('c_dall').checked)w.push('The whole app is blocked.');
+  if($('c_aid').value.trim()&&!$('c_atext').value.trim())w.push('The announcement has an id but no text.');
+  $('c_warn').innerHTML='';w.forEach(x=>$('c_warn').append(h('div',{text:x})));
+  return w;
+}
+document.querySelectorAll('#p-control input,#p-control textarea').forEach(e=>e.addEventListener('input',checkControl));
+$('c_newid').onclick=()=>{$('c_aid').value='msg-'+new Date().toISOString().slice(0,16).replace(/[-:T]/g,'');checkControl();};
+async function loadControl(){appCfg=await getJson('data/app_config.json',{schema:1});fillControl();log('Loaded app_config.json.');}
+$('c_reload').onclick=()=>loadControl().catch(e=>log('Failed: '+e.message,'bad'));
+$('c_clear').onclick=()=>{if(!confirm('Turn off every control (no forced update, no notice, no maintenance, nothing disabled)? The version numbers stay.'))return;
+  $('c_min').value='';$('c_aid').value='';$('c_atitle').value='';$('c_atext').value='';$('c_mon').checked=false;$('c_mtext').value='';$('c_dall').checked=false;$('c_dalltext').value='';$('c_dexp').checked=false;$('c_ftext').value='';checkControl();};
+$('c_save').onclick=async()=>{
+  const mn=$('c_min').value.trim(),lt=$('c_latest').value.trim();
+  if(!verOk(mn)||!verOk(lt)){alert('Fix the version numbers first.');return;}
+  if(($('c_mon').checked||$('c_dall').checked||mn)&&!confirm('This can block the app for users. Save anyway?'))return;
+  $('c_save').disabled=true;
+  try{const o=readControl();await commit([textEntry('data/app_config.json',o)],'Update app control');appCfg=o;log('Saved app control. Phones see it within about 5 minutes.','ok');}
+  catch(e){log('Failed: '+e.message,'bad');}
+  $('c_save').disabled=false;
+};
+
+/* ---------- backgrounds ---------- */
+let clips={}, clipOrig='', bgQueue=[], bgDel=new Set();
+async function loadBg(){
+  clips=await getJson('data/backgrounds/clips.json',{});clipOrig=JSON.stringify(clips);bgDel=new Set();renderBg();
+}
+function clipIds(){
+  const ids=new Set(Object.keys(clips));
+  Object.keys(tree).forEach(p=>{const m=p.match(/^data\/backgrounds\/([^\/]+)\.mp4$/);if(m)ids.add(m[1]);});
+  return [...ids].sort();
+}
+function renderBg(){
+  const cats=new Set(Object.values(clips).map(c=>c.category).filter(Boolean));
+  $('bgcats').innerHTML='';cats.forEach(c=>$('bgcats').append(h('option',{value:c})));
+  const box=$('bg_list');box.innerHTML='';
+  const ids=clipIds();
+  if(!ids.length)box.append(h('div',{class:'small',text:'No clips yet.'}));
+  ids.forEach(id=>{
+    const m=clips[id]=clips[id]||{};
+    const has=!!tree['data/backgrounds/'+id+'.mp4'];
+    const th=h('div',{class:'thumb'});
+    if(tree['data/backgrounds/'+id+'.jpg']){const im=h('img');im.loading='lazy';im.src=raw('data/backgrounds/'+id+'.jpg');th.append(im);}else th.textContent=has?'no preview yet':'file missing';
+    const f=h('div');
+    const ok=m.source&&m.licence;
+    f.append(h('div',{class:'small',text:id+'.mp4'}));
+    f.append(h('div',{},h('span',{class:'tag '+(ok?'ok':'bad'),text:ok?'will be published':'not published: add source and licence'})));
+    f.append(field('Name',m.name||'',v=>m.name=v));
+    f.append(field('Category',m.category||'',v=>m.category=v));
+    f.append(field('Source',m.source||'',v=>{m.source=v;}));
+    f.append(field('Licence',m.licence||'',v=>{m.licence=v;}));
+    f.append(field('Attribution',m.attribution||'',v=>m.attribution=v));
+    const del=h('label',{class:'chk'});const cb=h('input',{type:'checkbox'});cb.checked=bgDel.has(id);cb.onchange=()=>{cb.checked?bgDel.add(id):bgDel.delete(id);};
+    del.append(cb,h('span',{class:'bad',text:'Delete this clip'}));f.append(del);
+    box.append(h('div',{class:'item'},th,f));
+  });
+}
+$('bg_pick').onclick=()=>$('bg_files').click();
+$('bg_files').onchange=async()=>{
+  const files=[...$('bg_files').files];$('bg_files').value='';
+  for(const f of files){
+    const q={file:f,id:slug(f.name.replace(/\.[^.]+$/,'')),name:f.name.replace(/\.[^.]+$/,'').replace(/[_-]+/g,' '),dur:0,w:0,h:0};
+    await new Promise(res=>{const v=document.createElement('video');v.preload='metadata';v.muted=true;v.onloadedmetadata=()=>{q.dur=v.duration;q.w=v.videoWidth;q.h=v.videoHeight;URL.revokeObjectURL(v.src);res();};v.onerror=()=>res();v.src=URL.createObjectURL(f);});
+    bgQueue.push(q);
+  }
+  renderBgQueue();
+};
+function renderBgQueue(){
+  const box=$('bg_queue');box.innerHTML='';
+  bgQueue.forEach((q,i)=>{
+    const d=h('div',{class:'item',style:'grid-template-columns:1fr'});
+    const warn=[];
+    if(q.file.size>15*1024*1024)warn.push('Over 15 MB ('+(q.file.size/1048576).toFixed(1)+' MB).');
+    if(q.dur&&(q.dur<8||q.dur>40))warn.push('Length '+q.dur.toFixed(1)+' s (8 to 40 s advised).');
+    if(q.w&&Math.max(q.w,q.h)>1280)warn.push('Size '+q.w+'x'+q.h+' (1280 on the long side advised).');
+    d.append(h('div',{class:'small',text:q.file.name+' - '+(q.file.size/1048576).toFixed(1)+' MB'+(q.dur?' - '+q.dur.toFixed(1)+' s':'')}));
+    warn.forEach(w=>d.append(h('div',{class:'small warn',text:w})));
+    const r=h('div',{class:'row'});
+    r.append(field('Id (file name)',q.id,v=>q.id=slug(v)),field('Name',q.name,v=>q.name=v));
+    d.append(r);
+    const rm=h('button',{class:'btn sm',type:'button',text:'Remove'});rm.onclick=()=>{bgQueue.splice(i,1);renderBgQueue();};
+    d.append(rm);box.append(d);
+  });
+  $('bg_publish').disabled=!bgQueue.length;
+}
+$('bg_publish').onclick=async()=>{
+  const cat=$('bg_cat').value.trim(),src=$('bg_src').value.trim(),lic=$('bg_lic').value.trim(),att=$('bg_att').value.trim();
+  if(!cat||!src||!lic){alert('Fill Category, Source and Licence first.');return;}
+  if(bgQueue.some(q=>!q.id)){alert('Every clip needs an id.');return;}
+  $('bg_publish').disabled=true;
+  try{
+    const entries=[];
+    for(const q of bgQueue){log('Uploading '+q.id+'.mp4 ...');entries.push({path:'data/backgrounds/'+q.id+'.mp4',mode:'100644',type:'blob',sha:await blobSha(q.file)});
+      clips[q.id]={name:q.name,category:cat,source:src,licence:lic,attribution:att};}
+    entries.push(textEntry('data/backgrounds/clips.json',clips));
+    await commit(entries,'Add '+bgQueue.length+' video background(s)');
+    log('Uploaded. The data build starts by itself; check the Build tab.','ok');
+    bgQueue=[];renderBgQueue();clipOrig=JSON.stringify(clips);renderBg();
+  }catch(e){log('Failed: '+e.message,'bad');}
+  $('bg_publish').disabled=!bgQueue.length;
+};
+$('bg_save').onclick=async()=>{
+  $('bg_save').disabled=true;
+  try{
+    const entries=[];
+    bgDel.forEach(id=>{['mp4','jpg'].forEach(e=>{const p='data/backgrounds/'+id+'.'+e;if(tree[p])entries.push({path:p,mode:'100644',type:'blob',sha:null});});delete clips[id];});
+    for(const k of Object.keys(clips)){const m=clips[k];Object.keys(m).forEach(x=>{if(m[x]===''||m[x]===undefined)delete m[x];});}
+    entries.push(textEntry('data/backgrounds/clips.json',clips));
+    await commit(entries,'Update video background records');
+    log('Saved clip records'+(bgDel.size?' and deleted '+bgDel.size+' clip(s)':'')+'.','ok');
+    bgDel=new Set();clipOrig=JSON.stringify(clips);renderBg();
+  }catch(e){log('Failed: '+e.message,'bad');}
+  $('bg_save').disabled=false;
+};
+
+/* ---------- reciters ---------- */
+let recs=[], imgs={}, extra={reciters:[]}, photoQ={}, extraDirty=false;
+async function loadRec(){
+  const j=await getJson('data/reciters.json',{reciters:[]});recs=j.reciters||[];
+  imgs=await getJson('data/reciters/images.json',{});
+  extra=await getJson('data/reciters_extra.json',{reciters:[]});if(!Array.isArray(extra.reciters))extra={reciters:[]};
+  photoQ={};extraDirty=false;renderRec();renderExtra();
+}
+const DEFSRC='Supplied by the project owner (Usama, KAIDA)',DEFLIC='Supplied by the owner, who is responsible for confirming the right to use it',DEFATT='Photo supplied by the project owner';
+function renderRec(){
+  const box=$('r_list');box.innerHTML='';const q=$('r_search').value.toLowerCase();
+  const all=[...recs.map(r=>({id:r.id,name:r.name,country:r.country,ok:r.verified!==false})),...extra.reciters.filter(x=>!recs.some(r=>r.id===x.id)).map(x=>({id:x.id,name:x.name,country:x.country,ok:null}))];
+  all.forEach(r=>{
+    if(q&&!(r.name+' '+r.id+' '+(r.country||'')).toLowerCase().includes(q))return;
+    const th=h('div',{class:'thumb'});
+    if(photoQ[r.id]){const im=h('img');im.src=photoQ[r.id].url;th.append(im);}
+    else if(tree['data/reciters/'+r.id+'.jpg']){const im=h('img');im.loading='lazy';im.src=raw('data/reciters/'+r.id+'.jpg');th.append(im);}
+    else th.textContent='no photo';
+    const f=h('div');
+    f.append(h('div',{text:r.name,style:'font-weight:600'}));
+    f.append(h('div',{class:'small',text:r.id+(r.country?' - '+r.country:'')+(r.ok===false?' - hidden (not verified)':'')}));
+    const m=imgs[r.id]=imgs[r.id]||{};
+    const pick=h('button',{class:'btn sm',type:'button',text:photoQ[r.id]?'Choose another photo':(tree['data/reciters/'+r.id+'.jpg']?'Change photo':'Add photo')});
+    const fi=h('input',{type:'file',accept:'image/*',class:'hide'});
+    pick.onclick=()=>fi.click();
+    fi.onchange=async()=>{const file=fi.files[0];if(!file)return;try{photoQ[r.id]=await squareJpg(file);renderRec();}catch(e){log('Photo failed: '+e.message,'bad');}};
+    f.append(h('div',{style:'margin:8px 0'},pick,fi));
+    if(photoQ[r.id])f.append(h('div',{class:'small ok',text:'New photo ready ('+Math.round(photoQ[r.id].blob.size/1024)+' KB). Press Save.'}));
+    const ok=m.source&&m.licence;
+    f.append(h('div',{},h('span',{class:'tag '+(ok?'ok':'bad'),text:ok?'record complete':'needs source and licence'})));
+    const more=h('details');more.append(h('summary',{text:'Photo record'}));
+    more.append(field('Source',m.source||'',v=>m.source=v),field('Licence',m.licence||'',v=>m.licence=v),field('Attribution',m.attribution||'',v=>m.attribution=v));
+    const fill=h('button',{class:'btn sm',type:'button',text:'Fill with my default wording',style:'margin-top:8px'});
+    fill.onclick=()=>{m.source=DEFSRC;m.licence=DEFLIC;m.attribution=DEFATT;renderRec();};
+    more.append(fill);f.append(more);
+    box.append(h('div',{class:'item'},th,f));
+  });
+}
+$('r_search').oninput=renderRec;
+async function squareJpg(file){
+  const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error('Could not read the picture'));i.src=URL.createObjectURL(file);});
+  const s=Math.min(img.width,img.height),c=document.createElement('canvas');c.width=c.height=300;
+  const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,300,300);x.drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,300,300);
+  let q=.9,blob;
+  do{blob=await new Promise(r=>c.toBlob(r,'image/jpeg',q));q-=.1;}while(blob.size>380*1024&&q>.3);
+  return {blob,url:URL.createObjectURL(blob)};
+}
+$('r_save').onclick=async()=>{
+  $('r_save').disabled=true;
+  try{
+    const entries=[];
+    for(const id of Object.keys(photoQ)){log('Uploading photo '+id+' ...');entries.push({path:'data/reciters/'+id+'.jpg',mode:'100644',type:'blob',sha:await blobSha(photoQ[id].blob)});}
+    const out={};Object.keys(imgs).forEach(k=>{const m=imgs[k];if(m&&(m.source||m.licence||m.attribution))out[k]=m;});
+    entries.push(textEntry('data/reciters/images.json',out));
+    await commit(entries,'Update reciter photos and records');
+    log('Saved. The data build starts by itself; check the Build tab.','ok');
+    photoQ={};renderRec();
+  }catch(e){log('Failed: '+e.message,'bad');}
+  $('r_save').disabled=false;
+};
+function renderExtra(){
+  const box=$('x_list');box.innerHTML='';
+  if(!extra.reciters.length)box.append(h('div',{class:'small',text:'None yet.'}));
+  extra.reciters.forEach((x,i)=>{
+    const d=h('div',{class:'item',style:'grid-template-columns:1fr'});
+    d.append(h('div',{text:x.name+' ('+x.id+')',style:'font-weight:600'}),h('div',{class:'small',text:(x.country||'')+' - '+x.per_ayah_url}));
+    const rm=h('button',{class:'btn sm',type:'button',text:'Remove'});rm.onclick=()=>{extra.reciters.splice(i,1);extraDirty=true;renderExtra();renderRec();};
+    d.append(rm);box.append(d);
+  });
+  $('x_save').disabled=!extraDirty;
+}
+$('x_add').onclick=()=>{
+  const e={id:slug($('x_id').value),name:$('x_name').value.trim(),country:$('x_country').value.trim(),per_ayah_url:$('x_url').value.trim(),source:$('x_src').value.trim(),licence:$('x_lic').value.trim(),attribution:$('x_att').value.trim()};
+  if(!e.id||!e.name||!e.per_ayah_url){alert('Id, name and link are needed.');return;}
+  if(!e.per_ayah_url.includes('{SSS}')||!e.per_ayah_url.includes('{AAA}')){alert('The link must contain {SSS} and {AAA}.');return;}
+  if(!e.source||!e.licence){if(!confirm('Without source and licence the reciter is NOT published. Add anyway?'))return;}
+  if(extra.reciters.some(x=>x.id===e.id)||recs.some(r=>r.id===e.id)){alert('That id already exists.');return;}
+  extra.reciters.push(e);extraDirty=true;['x_id','x_name','x_country','x_url','x_src','x_lic','x_att'].forEach(i=>$(i).value='');renderExtra();renderRec();
+};
+$('x_save').onclick=async()=>{
+  $('x_save').disabled=true;
+  try{await commit([textEntry('data/reciters_extra.json',extra)],'Update extra reciters');extraDirty=false;log('Saved extra reciters. The data build starts by itself.','ok');renderExtra();}
+  catch(e){log('Failed: '+e.message,'bad');$('x_save').disabled=false;}
+};
+
+/* ---------- build ---------- */
+async function loadBuild(){
+  const box=$('b_runs');box.innerHTML='';
+  try{
+    const j=await (await api('/actions/workflows/build-data.yml/runs?per_page=4')).json();
+    (j.workflow_runs||[]).forEach(r=>{
+      const cls=r.conclusion==='success'?'ok':(r.conclusion?'bad':'warn');
+      box.append(h('div',{class:'small'},h('span',{class:'tag '+cls,text:r.status==='completed'?r.conclusion:r.status}),document.createTextNode(new Date(r.created_at).toLocaleString()+'  '),(()=>{const a=h('a',{href:r.html_url,target:'_blank',text:'open',style:'color:#c4b5fd'});return a;})()));
+    });
+    if(!(j.workflow_runs||[]).length)box.append(h('div',{class:'small',text:'No runs yet.'}));
+  }catch(e){box.append(h('div',{class:'small bad',text:'Could not read runs: '+e.message}));}
+  const rp=$('b_report');rp.innerHTML='';
+  try{
+    const r=await getJson('data/report.json',null);
+    if(!r){rp.textContent='No report yet.';return;}
+    rp.append(h('div',{text:'Built at: '+(r.built_at||'unknown')}));
+    (r.errors||[]).forEach(x=>rp.append(h('div',{class:'bad',text:'Error: '+x})));
+    (r.warnings||[]).forEach(x=>rp.append(h('div',{class:'warn',text:'Warning: '+x})));
+    if(!(r.errors||[]).length&&!(r.warnings||[]).length)rp.append(h('div',{class:'ok',text:'No errors or warnings.'}));
+  }catch(e){rp.textContent='Could not read the report: '+e.message;}
+}
+$('b_refresh').onclick=()=>loadBuild();
+$('b_run').onclick=async()=>{
+  $('b_run').disabled=true;
+  try{await api('/actions/workflows/build-data.yml/dispatches',{method:'POST',body:JSON.stringify({ref:cfg.branch})});log('Build started. Refresh in a minute or two.','ok');setTimeout(loadBuild,4000);}
+  catch(e){log('Failed: '+e.message+' (the token needs Actions: Read and write)','bad');}
+  $('b_run').disabled=false;
+};
+
+/* ---------- start ---------- */
+try{const s=JSON.parse(localStorage.getItem('qs_admin')||'null');if(s){$('token').value=s.token;$('repo').value=s.repo;$('branch').value=s.branch;connect();}}catch(e){}
+</script>
+</body>
+</html>
