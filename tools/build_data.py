@@ -343,7 +343,7 @@ def probe_video(path):
         return None
     try:
         out = subprocess.run(
-            ["ffprobe", "-v", "error", "-show_entries", "format=duration:stream=codec_type,width,height",
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration:stream=codec_type,codec_name,pix_fmt,width,height",
              "-of", "json", path], capture_output=True, text=True, timeout=60, check=True).stdout
         j = json.loads(out)
         dur = int(float(j.get("format", {}).get("duration", 0)) * 1000)
@@ -352,6 +352,9 @@ def probe_video(path):
         for st in j.get("streams", []):
             if st.get("codec_type") == "video" and not w:
                 w, h = int(st.get("width", 0)), int(st.get("height", 0))
+                if st.get("codec_name") != "h264" or st.get("pix_fmt") not in ("yuv420p", "yuvj420p"):
+                    warn("Video codec %s / %s: only H.264 with yuv420p plays on every phone; re-encode this clip"
+                         % (st.get("codec_name"), st.get("pix_fmt")))
             if st.get("codec_type") == "audio":
                 audio = True
         return dur, w, h, audio
@@ -430,12 +433,18 @@ def build_backgrounds():
             if size > 15 * 1024 * 1024:
                 warn("Background %s is %.1f MB (under 15 MB advised)" % (cid, size / 1048576))
             preview = os.path.join(bdir, cid + ".jpg")
-            if not os.path.exists(preview) and shutil.which("ffmpeg"):
-                try:
-                    subprocess.run(["ffmpeg", "-y", "-v", "error", "-ss", "1", "-i", path, "-frames:v", "1",
-                                    "-vf", "scale=320:-2", preview], timeout=60, check=True)
-                except Exception as e:
-                    warn("Preview for %s failed: %s" % (cid, e))
+            # Always remade, from the middle of the clip: the first frames of many generated clips are
+            # black, which made the preview look blank.
+            if shutil.which("ffmpeg"):
+                at = "%.2f" % max(0.5, (dur / 1000.0) * 0.4) if dur else "1"
+                for seek in (at, "0"):
+                    try:
+                        subprocess.run(["ffmpeg", "-y", "-v", "error", "-ss", seek, "-i", path, "-frames:v", "1",
+                                        "-vf", "scale=360:-2", "-q:v", "4", preview], timeout=60, check=True)
+                        if os.path.exists(preview) and os.path.getsize(preview) > 1000:
+                            break
+                    except Exception as e:
+                        warn("Preview for %s failed: %s" % (cid, e))
             clips.append({
                 "id": cid, "name": m.get("name", cid), "category": m.get("category", "Other"),
                 "path": "backgrounds/" + fn,
