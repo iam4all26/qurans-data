@@ -1,13 +1,13 @@
 {
  "version": 1,
- "built_at": "2026-11-21T08:02:20Z",
+ "built_at": "2026-11-21T13:01:54Z",
  "files": [
   {
    "id": "quran",
    "type": "database",
    "path": "quran.db",
    "sizeBytes": 1650688,
-   "sha256": "2c35dcad40e5be591c57bdcb7474ae589affe17ef73f0555c120994231552440",
+   "sha256": "dabe745fa2076660fa74309fb6254ca15651ca81be2fc0103ed9cab73408ab28",
    "verses": 6236,
    "surahs": 114
   },
@@ -16,7 +16,7 @@
    "type": "translation",
    "path": "translations/en_sahih.json",
    "sizeBytes": 896732,
-   "sha256": "c215094ee24057531f2c890ad3c031dcec2a684ed124939b121787821966aeaf",
+   "sha256": "0bd0d5295547b796dd834d4610fd669848012610d564b034d4516d6096239e27",
    "language": "en",
    "name": "English",
    "translator": "Sahih International"
@@ -26,7 +26,7 @@
    "type": "translation",
    "path": "translations/ha_gumi.json",
    "sizeBytes": 949688,
-   "sha256": "38d0b20d465164e27e3ff6447548f3928f5733f9df24f0abd8d4d2690e115a74",
+   "sha256": "c0c277ed887f8f51ee0e52f4d11c380b121b9e13c54163333f6b1bbcdb505a24",
    "language": "ha",
    "name": "Hausa",
    "translator": "Abu Bakr Gumi"
@@ -36,7 +36,7 @@
    "type": "translation",
    "path": "translations/yo_mikail.json",
    "sizeBytes": 1503897,
-   "sha256": "b7447ed96a89ab56bb11cfaa3fb9fbafe4025fb43aa99c151235a40f4f31eec6",
+   "sha256": "8e5558972a540fdfde15ff8b1476d865d49248928edf32e377c5dbc867f4f414",
    "language": "yo",
    "name": "Yoruba",
    "translator": "Shaykh Abu Rahimah Mikail Aduwun"
@@ -46,7 +46,7 @@
    "type": "translation",
    "path": "translations/sw_abubakr.json",
    "sizeBytes": 1788869,
-   "sha256": "025e97c6ccdf0ce7411a01f72a35a6ee880fa4304b773c5c11463915ec7fd448",
+   "sha256": "912580eda959725e49a70832f3f3892497a750663911f0d5c30a02bb8f81e9f6",
    "language": "sw",
    "name": "Swahili",
    "translator": "Abdullah Muhammad and Nasir Khamis"
@@ -56,7 +56,7 @@
    "type": "translation",
    "path": "translations/am_sadiq.json",
    "sizeBytes": 1339639,
-   "sha256": "cad6dfc1092a62ade6a952ae6aa246140fef183cc64b9173d8c9b4ae5d0813c4",
+   "sha256": "cc4ee6eae0fc268240e190ce7764b9ecc3d65c120afc838a779a0db25a3a4eb0",
    "language": "am",
    "name": "Amharic",
    "translator": "Muhammad Sadiq and Muhammad Al-Sani"
@@ -66,7 +66,7 @@
    "type": "translation",
    "path": "translations/so_yacob.json",
    "sizeBytes": 906926,
-   "sha256": "407e30c34296172c03118799e3b0e904b030e1f994eb46d48f8a7c827b7ee821",
+   "sha256": "8bf0764abad2d9f6d4a53a7c425d9bd132287144fb8dbe020467c43f52b776bf",
    "language": "so",
    "name": "Somali",
    "translator": "Mahmud Muhammad Abduh / Yacob"
@@ -76,7 +76,7 @@
    "type": "translation",
    "path": "translations/om_ababor.json",
    "sizeBytes": 913113,
-   "sha256": "69699705368d80f6f968fb147600fc3d4d4823d9aa24098b530026c69cb4b157",
+   "sha256": "58e5fa05af5d88f0ea172de05bcc5020f114fdf3c2a8c8917b0aa67b2c5adac1",
    "language": "om",
    "name": "Oromo",
    "translator": "Ghali Apapur Abu"
@@ -86,7 +86,7 @@
    "type": "translation",
    "path": "translations/ff_fulani.json",
    "sizeBytes": 809575,
-   "sha256": "f60d391a908f9701eef01d5decf4b35225860a80734b1df53965193d2041761e",
+   "sha256": "3748b4ea365bad929e5a3f434fd464cb4e391638bf48ed0f8c8d5a1ea1f3be3d",
    "language": "ff",
    "name": "Fulani",
    "translator": "QuranEnc Fulani"
@@ -96,7 +96,7 @@
    "type": "translation",
    "path": "translations/rw_assoc.json",
    "sizeBytes": 983552,
-   "sha256": "b7aeb51289aa43debc921680f52495fe3c4ec349fa2961d511b7701aec396ff1",
+   "sha256": "0b23a77b765b76dde5b33d50b3b83ad8cc2ca27bf159a2c3a4f35cffb0da8b23",
    "language": "rw",
    "name": "Kinyarwanda",
    "translator": "Rwanda Muslims Association"
@@ -106,7 +106,7 @@
    "type": "translation",
    "path": "translations/fr_rashid.json",
    "sizeBytes": 1039837,
-   "sha256": "4bab9c0b9ace4643d0ec06a74941f21e305ff99ae17b9dcaae26b679fe875413",
+   "sha256": "012b8c66ad1654023c618e086b0de6007b6f722e91e7fdf0b7df0f2ea99f3d35",
    "language": "fr",
    "name": "French",
    "translator": "Rashid Maash"
@@ -116,7 +116,7 @@
    "type": "translation",
    "path": "translations/es_garcia.json",
    "sizeBytes": 959322,
-   "sha256": "fbe202693e5ca20a90292928e9d06efaf19769668df6bd0d14c852d6d10ce68c",
+   "sha256": "ce0d2eaa4c2d53f0be500e4cc50d37e587be95cb3a60f259546ee99e3305a62b",
    "language": "es",
    "name": "Spanish",
    "translator": "Muhammad Isa Garcia"
@@ -126,7 +126,7 @@
    "type": "translation",
    "path": "translations/pt_nasr.json",
    "sizeBytes": 867552,
-   "sha256": "f216d530710d48eb2a32829845086e814fcc16e47a8b1fca58a2be337f84ecf4",
+   "sha256": "335ad4609cdc8f51ff0435f91a110e2562e80817771e37b7d52aa667efbd9e85",
    "language": "pt",
    "name": "Portuguese",
    "translator": "Helmi Nasr"
@@ -136,7 +136,7 @@
    "type": "translation",
    "path": "translations/tr_rwwad.json",
    "sizeBytes": 913195,
-   "sha256": "353bb3b3cebf0e513435f3029766ae3f745ab4683e972a5d7a625eeee7d675fb",
+   "sha256": "c106077ced33d8eca9123b32edf1d6d7fa09e4e4d3384a70208cb0b33b12d8ae",
    "language": "tr",
    "name": "Turkish",
    "translator": "Rowad Translation Center"
@@ -146,7 +146,7 @@
    "type": "translation",
    "path": "translations/id_affairs.json",
    "sizeBytes": 1122670,
-   "sha256": "06931a5b68202eae5cb14296e1488dfbd2567b1d6f14a118d24b0624a209984d",
+   "sha256": "0c3fbf4e2a1be7d2a5adc1f1d253c84667dec19308505e38c30a7654df48596e",
    "language": "id",
    "name": "Indonesian",
    "translator": "Indonesian Ministry of Religious Affairs"
@@ -156,7 +156,7 @@
    "type": "translation",
    "path": "translations/ur_junagarhi.json",
    "sizeBytes": 1477629,
-   "sha256": "116dd340aaeeec9a2764012cfe1f94090f0b277e07716eeac023abd07de8302b",
+   "sha256": "b9c51c7ac7585a637e469ac7824582ea44c84998a21ce056e483bc2749d9047e",
    "language": "ur",
    "name": "Urdu",
    "translator": "Muhammad Junagarhi"
@@ -166,7 +166,7 @@
    "type": "reciters",
    "path": "reciters.json",
    "sizeBytes": 20004,
-   "sha256": "4f1c86e32267241cf07b5e297e3056667f4bcd647699fe01469e82042771e7d9"
+   "sha256": "dfaea845695855115ba52eb7d89a2d8df3756d1c4d19e4bcf188b8447eea87b0"
   },
   {
    "id": "AmiriQuran-Regular",

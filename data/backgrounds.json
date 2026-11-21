@@ -3,18 +3,18 @@
  "clips": [
   {
    "id": "sahara",
-   "name": "555879505 1795027444569576",
+   "name": "Nature",
    "category": "Sahara",
    "path": "backgrounds/sahara.mp4",
    "preview": "",
-   "sizeBytes": 4477609,
-   "sha256": "f28a889b8a1a1c59c8244ed71ba6191460b0a20bee33aa73cc40bb036ac5ad42",
+   "sizeBytes": 7515653,
+   "sha256": "90da92ae8acf5c36cfbba96bae27b28846660a6cf79789c9d272192507704c79",
    "durationMs": 0,
    "width": 0,
    "height": 0,
    "source": "Created by me with Google Flow",
-   "licence": "Own work",
-   "attribution": "Usama Musa Gudu"
+   "licence": "Own Work",
+   "attribution": "usama Musa Gudu"
   }
  ]
 }
