@@ -1,13 +1,13 @@
 {
  "version": 1,
- "built_at": "2026-11-21T03:12:20Z",
+ "built_at": "2026-11-21T03:39:05Z",
  "files": [
   {
    "id": "quran",
    "type": "database",
    "path": "quran.db",
-   "sizeBytes": 1646592,
-   "sha256": "e0552eea12ec580f013980c94c0a63467a83e31f461434b517e64353f44edc46",
+   "sizeBytes": 1650688,
+   "sha256": "bbb7790b6c4a0ed1c3d179baa6336623479ffc5ef38262e2a0ee13ad26fc96dd",
    "verses": 6236,
    "surahs": 114
   },
@@ -16,23 +16,157 @@
    "type": "translation",
    "path": "translations/en_sahih.json",
    "sizeBytes": 896732,
-   "sha256": "dea0ccd9072e6c7f947f17b9a731aa6b8e9bbd5ac5314b916c8ad511ba4d3ec9",
-   "language": "en"
+   "sha256": "ef8443bd8ad80347f055d1a7d027253028bf4a9f6f9421a7961accf724c87379",
+   "language": "en",
+   "name": "English",
+   "translator": "Sahih International"
   },
   {
    "id": "ha_gumi",
    "type": "translation",
    "path": "translations/ha_gumi.json",
    "sizeBytes": 949688,
-   "sha256": "b667e9abf6cc944dd30d44b47f7da0eb383866c1d1ea9fff0c70b1b6a4e63f51",
-   "language": "ha"
+   "sha256": "b82cb70190f341c544bdf8babc17a713017f14eb05708e16b7c11eb6e7c2d689",
+   "language": "ha",
+   "name": "Hausa",
+   "translator": "Abu Bakr Gumi"
+  },
+  {
+   "id": "yo_mikail",
+   "type": "translation",
+   "path": "translations/yo_mikail.json",
+   "sizeBytes": 1503897,
+   "sha256": "6b177788724c41c2a0c6891f5cf214a39d96d5a8b335f243291b10e887a08576",
+   "language": "yo",
+   "name": "Yoruba",
+   "translator": "Shaykh Abu Rahimah Mikail Aduwun"
+  },
+  {
+   "id": "sw_abubakr",
+   "type": "translation",
+   "path": "translations/sw_abubakr.json",
+   "sizeBytes": 1788869,
+   "sha256": "9831f140de18148d67774fed3e5ef5245d3cd929ff099b2f3bfc0e4cad0e5961",
+   "language": "sw",
+   "name": "Swahili",
+   "translator": "Abdullah Muhammad and Nasir Khamis"
+  },
+  {
+   "id": "am_sadiq",
+   "type": "translation",
+   "path": "translations/am_sadiq.json",
+   "sizeBytes": 1339639,
+   "sha256": "b203ad1b7814d13bf3eedab62ded70a0ef4b9420d528e2bb2df0c43fcc64d36f",
+   "language": "am",
+   "name": "Amharic",
+   "translator": "Muhammad Sadiq and Muhammad Al-Sani"
+  },
+  {
+   "id": "so_yacob",
+   "type": "translation",
+   "path": "translations/so_yacob.json",
+   "sizeBytes": 906926,
+   "sha256": "a03c4496573d24518ae7d8c953835109cc8bdfc5624bb9d50f49e960bda708b0",
+   "language": "so",
+   "name": "Somali",
+   "translator": "Mahmud Muhammad Abduh / Yacob"
+  },
+  {
+   "id": "om_ababor",
+   "type": "translation",
+   "path": "translations/om_ababor.json",
+   "sizeBytes": 913113,
+   "sha256": "ddd14c462399c74ab7905bf42f2b628e3cbe5f5974956464aba3b79fa7baf446",
+   "language": "om",
+   "name": "Oromo",
+   "translator": "Ghali Apapur Abu"
+  },
+  {
+   "id": "ff_fulani",
+   "type": "translation",
+   "path": "translations/ff_fulani.json",
+   "sizeBytes": 809575,
+   "sha256": "f2cf9c142562d904cf93e20b6592df82e183b8bb4d0e33a061a367976c30127b",
+   "language": "ff",
+   "name": "Fulani",
+   "translator": "QuranEnc Fulani"
+  },
+  {
+   "id": "rw_assoc",
+   "type": "translation",
+   "path": "translations/rw_assoc.json",
+   "sizeBytes": 983552,
+   "sha256": "db24b090a7a218e6b6406f71fc48aeddd8b77ce0239438a120f86b20aec46a04",
+   "language": "rw",
+   "name": "Kinyarwanda",
+   "translator": "Rwanda Muslims Association"
+  },
+  {
+   "id": "fr_rashid",
+   "type": "translation",
+   "path": "translations/fr_rashid.json",
+   "sizeBytes": 1039837,
+   "sha256": "3f9f6351225204dff03474c4e8ce0eb0aef8ae1704d87fc3b9071474113b037c",
+   "language": "fr",
+   "name": "French",
+   "translator": "Rashid Maash"
+  },
+  {
+   "id": "es_garcia",
+   "type": "translation",
+   "path": "translations/es_garcia.json",
+   "sizeBytes": 959322,
+   "sha256": "bfbedfe192fb8ea899e988940faca76077a2dd3e22696f9e4722d7bfd883490a",
+   "language": "es",
+   "name": "Spanish",
+   "translator": "Muhammad Isa Garcia"
+  },
+  {
+   "id": "pt_nasr",
+   "type": "translation",
+   "path": "translations/pt_nasr.json",
+   "sizeBytes": 867552,
+   "sha256": "3070fe750e9dc42225a737124641b71d84ffc4351379a950d64279bac4dc35f9",
+   "language": "pt",
+   "name": "Portuguese",
+   "translator": "Helmi Nasr"
+  },
+  {
+   "id": "tr_rwwad",
+   "type": "translation",
+   "path": "translations/tr_rwwad.json",
+   "sizeBytes": 913195,
+   "sha256": "3cb20a4a397a3bbb5956ef098d8c8135e02637381f56ca5a58a1d6a1b159938b",
+   "language": "tr",
+   "name": "Turkish",
+   "translator": "Rowad Translation Center"
+  },
+  {
+   "id": "id_affairs",
+   "type": "translation",
+   "path": "translations/id_affairs.json",
+   "sizeBytes": 1122670,
+   "sha256": "01254af50e82e73628f87580c860e6e40f4e376375e1148c7871b2944b834b20",
+   "language": "id",
+   "name": "Indonesian",
+   "translator": "Indonesian Ministry of Religious Affairs"
+  },
+  {
+   "id": "ur_junagarhi",
+   "type": "translation",
+   "path": "translations/ur_junagarhi.json",
+   "sizeBytes": 1477629,
+   "sha256": "68cdfe123e0f381c3526e57775abd9d949d76b1c86040ba1a29397d7199316d8",
+   "language": "ur",
+   "name": "Urdu",
+   "translator": "Muhammad Junagarhi"
   },
   {
    "id": "reciters",
    "type": "reciters",
    "path": "reciters.json",
-   "sizeBytes": 2507,
-   "sha256": "1313a931df3e8b71663505ad0dff27f8119f630be71f6e9d02e2b177e33d7422"
+   "sizeBytes": 20004,
+   "sha256": "9666227d5fe9a40427cb6915d6b2667590dd0337ca8af1a784d7fb0ed6bf49d5"
   },
   {
    "id": "AmiriQuran-Regular",

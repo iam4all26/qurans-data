@@ -1,9 +1,20 @@
 {
- "built_at": "2026-11-21T03:12:20Z",
+ "built_at": "2026-11-21T03:39:05Z",
  "ok": true,
  "errors": [],
  "warnings": [
-  "QuranEnc Arabic differs from the Uthmani text in 405 verses; check the report"
+  "QuranEnc Arabic differs from the Uthmani text in 293 verses; check the report",
+  "Igbo: key igbo_zhakir failed (HTTP 404 for https://quranenc.com/api/v1/translation/sura/igbo_zhakir/1)",
+  "Igbo: key igbo_mohammed failed (HTTP 404 for https://quranenc.com/api/v1/translation/sura/igbo_mohammed/1)",
+  "Igbo skipped: no working QuranEnc key",
+  "Fulani: key fulani_hamza failed (HTTP 404 for https://quranenc.com/api/v1/translation/sura/fulani_hamza/1)",
+  "Fulani: key fulani_assoc failed (HTTP 404 for https://quranenc.com/api/v1/translation/sura/fulani_assoc/1)",
+  "Wolof: key wolof_ibrahim failed (HTTP 404 for https://quranenc.com/api/v1/translation/sura/wolof_ibrahim/1)",
+  "Wolof: key wolof_assoc failed (HTTP 404 for https://quranenc.com/api/v1/translation/sura/wolof_assoc/1)",
+  "Wolof skipped: no working QuranEnc key",
+  "Tigrinya: key tigrinya_assoc failed (HTTP 404 for https://quranenc.com/api/v1/translation/sura/tigrinya_assoc/1)",
+  "Tigrinya skipped: no working QuranEnc key",
+  "Reciter husary_mujawwad folder Husary_Mujawwad_128kbps not confirmed (404)"
  ],
  "checks": [
   {
@@ -14,7 +25,7 @@
   {
    "check": "basmala handling",
    "result": "ok",
-   "detail": "stored once; prefix removed from 0 surah openings"
+   "detail": "stored once; prefix removed from 112 surah openings"
   },
   {
    "check": "en.sahih structure",
@@ -24,7 +35,72 @@
   {
    "check": "QuranEnc Hausa",
    "result": "ok",
-   "detail": "6236 verses, Arabic text differs (letters only) in 405 verses"
+   "detail": "6236 verses, Arabic text differs (letters only) in 293 verses"
+  },
+  {
+   "check": "QuranEnc Yoruba",
+   "result": "ok",
+   "detail": "key yoruba_mikail, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Swahili",
+   "result": "ok",
+   "detail": "key swahili_abubakr, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Amharic",
+   "result": "ok",
+   "detail": "key amharic_sadiq, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Somali",
+   "result": "ok",
+   "detail": "key somali_yacob, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Oromo",
+   "result": "ok",
+   "detail": "key oromo_ababor, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Fulani",
+   "result": "ok",
+   "detail": "key fulani_rwwad, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Kinyarwanda",
+   "result": "ok",
+   "detail": "key kinyarwanda_assoc, 6236 verses"
+  },
+  {
+   "check": "QuranEnc French",
+   "result": "ok",
+   "detail": "key french_rashid, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Spanish",
+   "result": "ok",
+   "detail": "key spanish_garcia, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Portuguese",
+   "result": "ok",
+   "detail": "key portuguese_nasr, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Turkish",
+   "result": "ok",
+   "detail": "key turkish_rwwad, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Indonesian",
+   "result": "ok",
+   "detail": "key indonesian_affairs, 6236 verses"
+  },
+  {
+   "check": "QuranEnc Urdu",
+   "result": "ok",
+   "detail": "key urdu_junagarhi, 6236 verses"
   },
   {
    "check": "quran.db written",
@@ -32,9 +108,14 @@
    "detail": "6236 verses"
   },
   {
+   "check": "reciter pictures",
+   "result": "ok",
+   "detail": "31 of 31 reciters have a published picture"
+  },
+  {
    "check": "reciters",
    "result": "ok",
-   "detail": "6 of 6 confirmed"
+   "detail": "30 of 31 confirmed"
   },
   {
    "check": "font",
@@ -120,8 +201,13 @@
    "check": "font",
    "result": "ok",
    "detail": "Poppins (Poppins-Regular.ttf, 156 KB)"
+  },
+  {
+   "check": "backgrounds",
+   "result": "ok",
+   "detail": "1 clips published"
   }
  ],
- "basmala_prefix_removed_from": 0,
- "quranenc_arabic_letter_differences": 405
+ "basmala_prefix_removed_from": 112,
+ "quranenc_arabic_letter_differences": 293
 }
