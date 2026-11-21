@@ -1,13 +1,13 @@
 {
  "version": 1,
- "built_at": "2026-11-19T04:06:06Z",
+ "built_at": "2026-11-21T03:12:20Z",
  "files": [
   {
    "id": "quran",
    "type": "database",
    "path": "quran.db",
-   "sizeBytes": 1642496,
-   "sha256": "5ddb33960e31517890b9ffcc996c300fa29f5fc3ff81f1aae4e96b7d6cdda7c3",
+   "sizeBytes": 1646592,
+   "sha256": "e0552eea12ec580f013980c94c0a63467a83e31f461434b517e64353f44edc46",
    "verses": 6236,
    "surahs": 114
   },
@@ -16,7 +16,7 @@
    "type": "translation",
    "path": "translations/en_sahih.json",
    "sizeBytes": 896732,
-   "sha256": "84574e99e5ba25780d37fa7dbc0bfa8e4d919bbb9135e73f96a717b925f2a960",
+   "sha256": "dea0ccd9072e6c7f947f17b9a731aa6b8e9bbd5ac5314b916c8ad511ba4d3ec9",
    "language": "en"
   },
   {
@@ -24,15 +24,15 @@
    "type": "translation",
    "path": "translations/ha_gumi.json",
    "sizeBytes": 949688,
-   "sha256": "08ce44afce3c11bb4468529f286664334443ae5c7b245d08d4fe3d4e8a91d88e",
+   "sha256": "b667e9abf6cc944dd30d44b47f7da0eb383866c1d1ea9fff0c70b1b6a4e63f51",
    "language": "ha"
   },
   {
    "id": "reciters",
    "type": "reciters",
    "path": "reciters.json",
-   "sizeBytes": 20004,
-   "sha256": "e4852fd20be495aceab74344f5334988f112eecae000b3a9da3b0b72d3b2adf0"
+   "sizeBytes": 2507,
+   "sha256": "1313a931df3e8b71663505ad0dff27f8119f630be71f6e9d02e2b177e33d7422"
   },
   {
    "id": "AmiriQuran-Regular",
@@ -89,6 +89,86 @@
    "sizeBytes": 1887192,
    "sha256": "4d8e6761424656867019081a1a01336f3cb086982682698714054fc33f782713",
    "family": "Noto Serif"
+  },
+  {
+   "id": "Amiri-Regular",
+   "type": "font",
+   "path": "fonts/Amiri-Regular.ttf",
+   "sizeBytes": 431116,
+   "sha256": "ab391c4147d054c48976e98322ad0eefe1427aa0e0502a12a4c75d80a70cfcd7",
+   "family": "Amiri"
+  },
+  {
+   "id": "Lateef-Regular",
+   "type": "font",
+   "path": "fonts/Lateef-Regular.ttf",
+   "sizeBytes": 241092,
+   "sha256": "fcbd9e0227a4d7238880defa5fd74c012d69351150709e559a8577446145c2fc",
+   "family": "Lateef"
+  },
+  {
+   "id": "Harmattan-Regular",
+   "type": "font",
+   "path": "fonts/Harmattan-Regular.ttf",
+   "sizeBytes": 573500,
+   "sha256": "5fbaafc51ad21663729b168afaff5f28d3e3087f1fc736ada32d7cd99674c0e0",
+   "family": "Harmattan"
+  },
+  {
+   "id": "Cairo-Regular",
+   "type": "font",
+   "path": "fonts/Cairo-Regular.ttf",
+   "sizeBytes": 599548,
+   "sha256": "667c987182391c91f4e57a2f455b1794fb5e3ee6ca4ef3383e86bb690fa9c964",
+   "family": "Cairo"
+  },
+  {
+   "id": "Tajawal-Regular",
+   "type": "font",
+   "path": "fonts/Tajawal-Regular.ttf",
+   "sizeBytes": 60364,
+   "sha256": "6882892da3e03527d5db2bbab3b48bde6ef2e878a43f522d1a4eebda90010a19",
+   "family": "Tajawal"
+  },
+  {
+   "id": "Almarai-Regular",
+   "type": "font",
+   "path": "fonts/Almarai-Regular.ttf",
+   "sizeBytes": 152824,
+   "sha256": "5b5cad33c8e5922083728d271cdcda91f96ba291f1307eccc4f4ef732dc19622",
+   "family": "Almarai"
+  },
+  {
+   "id": "ArefRuqaa-Regular",
+   "type": "font",
+   "path": "fonts/ArefRuqaa-Regular.ttf",
+   "sizeBytes": 110696,
+   "sha256": "ceb786d83ba92f35e96efcd8623c2858d288e0c543c8761ba35b1020989464f9",
+   "family": "Aref Ruqaa"
+  },
+  {
+   "id": "MarkaziText-Regular",
+   "type": "font",
+   "path": "fonts/MarkaziText-Regular.ttf",
+   "sizeBytes": 296896,
+   "sha256": "424b7331681160ff2a4b209bfc356ea9564d429a7daea43ee4dc28de8ff4f9fe",
+   "family": "Markazi Text"
+  },
+  {
+   "id": "Lora-Regular",
+   "type": "font",
+   "path": "fonts/Lora-Regular.ttf",
+   "sizeBytes": 212196,
+   "sha256": "822a6621ccbe8d97d20ac88c1c41f5615c9c2c202eaa75f272cd452aac6475a7",
+   "family": "Lora"
+  },
+  {
+   "id": "Poppins-Regular",
+   "type": "font",
+   "path": "fonts/Poppins-Regular.ttf",
+   "sizeBytes": 160316,
+   "sha256": "7e65201e9b79159e2300267cc885e16c8dcef2424cdfa09a29bfb0980a94a7ba",
+   "family": "Poppins"
   }
  ]
 }

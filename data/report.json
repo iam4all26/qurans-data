@@ -1,10 +1,9 @@
 {
- "built_at": "2026-11-19T04:06:06Z",
+ "built_at": "2026-11-21T03:12:20Z",
  "ok": true,
  "errors": [],
  "warnings": [
-  "QuranEnc Arabic differs from the Uthmani text in 293 verses; check the report",
-  "Reciter husary_mujawwad folder Husary_Mujawwad_128kbps not confirmed (404)"
+  "QuranEnc Arabic differs from the Uthmani text in 405 verses; check the report"
  ],
  "checks": [
   {
@@ -15,7 +14,7 @@
   {
    "check": "basmala handling",
    "result": "ok",
-   "detail": "stored once; prefix removed from 112 surah openings"
+   "detail": "stored once; prefix removed from 0 surah openings"
   },
   {
    "check": "en.sahih structure",
@@ -25,7 +24,7 @@
   {
    "check": "QuranEnc Hausa",
    "result": "ok",
-   "detail": "6236 verses, Arabic text differs (letters only) in 293 verses"
+   "detail": "6236 verses, Arabic text differs (letters only) in 405 verses"
   },
   {
    "check": "quran.db written",
@@ -33,14 +32,9 @@
    "detail": "6236 verses"
   },
   {
-   "check": "reciter pictures",
-   "result": "ok",
-   "detail": "31 of 31 reciters have a published picture"
-  },
-  {
    "check": "reciters",
    "result": "ok",
-   "detail": "30 of 31 confirmed"
+   "detail": "6 of 6 confirmed"
   },
   {
    "check": "font",
@@ -78,11 +72,56 @@
    "detail": "Noto Serif (NotoSerif[wdth,wght].ttf, 1842 KB)"
   },
   {
-   "check": "backgrounds",
+   "check": "font",
    "result": "ok",
-   "detail": "1 clips published"
+   "detail": "Amiri (Amiri-Regular.ttf, 421 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Lateef (Lateef-Regular.ttf, 235 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Harmattan (Harmattan-Regular.ttf, 560 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Cairo (Cairo[slnt,wght].ttf, 585 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Tajawal (Tajawal-Regular.ttf, 58 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Almarai (Almarai-Regular.ttf, 149 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Aref Ruqaa (ArefRuqaa-Regular.ttf, 108 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Markazi Text (MarkaziText[wght].ttf, 289 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Lora (Lora[wght].ttf, 207 KB)"
+  },
+  {
+   "check": "font",
+   "result": "ok",
+   "detail": "Poppins (Poppins-Regular.ttf, 156 KB)"
   }
  ],
- "basmala_prefix_removed_from": 112,
- "quranenc_arabic_letter_differences": 293
+ "basmala_prefix_removed_from": 0,
+ "quranenc_arabic_letter_differences": 405
 }
